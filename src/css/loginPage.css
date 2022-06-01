@@ -1,7 +1,7 @@
 #wrapper {
-    width: 50%;
+    width: 55%;
     margin: auto;
-    margin-top: 25vh;
+    margin-top: 15vh;
     background-color: gray;
     text-align: center;
     padding: 50px 0;
@@ -9,16 +9,131 @@
 }
 
 #LoginUserTitle {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     font-size: 25px;
     font-weight: bold;
     background-color: gainsboro;
+    letter-spacing: 1px;
 }
 
 #email, #password {
-    margin-bottom: 15px;
+    margin-bottom: 20px;
     height: 22px;
     width: 250px;
     padding-left: 10px;
     font-size: 95%;
+}
+
+#loginBtn {
+    margin-bottom: 20px;
+    height: 30px;
+    width: 100px;
+    background-color: #0091EA;
+    border-radius: 3px;
+    border: 1px black solid;
+    border: unset;
+    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+#loginBtn:hover {
+    background-color: #0277BD;
+}
+
+#msg {
+    color: red;
+    /* margin-bottom: 10px; */
+}
+
+#forgotFacultyPass {
+    margin-top: 10px;
+    font-size: 17px;
+}
+
+#forgotFacultyPass a {
+    text-decoration: unset;
+}
+
+#forgotFacultyPass a:hover {
+    color: #32075a;
+    text-decoration: underline;
+}
+
+#SignUpBtnArea {
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    justify-content: center;
+}
+
+#facultySignUpBtn {
+    background-color: rgb(170, 101, 11);
+    width: fit-content;
+    margin: auto;
+    padding: 10px 20px;
+    margin-bottom: 15px;
+    color: white;
+    text-decoration: unset;
+    border-radius: 5px;
+}
+
+#facultySignUpBtn:hover {
+    background-color: rgb(116, 64, 16);
+}
+
+#candidateSignUpBtn {
+    background-color: rgb(8, 117, 13);
+    width: fit-content;
+    margin: auto;
+    padding: 10px 20px;
+    color: white;
+    text-decoration: unset;
+    border-radius: 5px;
+}
+
+#candidateSignUpBtn:hover {
+    background-color: rgb(7, 73, 11);
+}
+
+/* ...............SignUp_Page................. */
+.CandidateSignUpWrapper {
+    margin-top: 50px !important;
+    padding: 30px 0 !important;
+    margin-bottom: 30px !important;
+}
+
+#SignUpUserTitle{
+    margin: 15px 0;
+    font-size: 25px;
+    font-weight: bold;
+    background-color: gainsboro;
+    letter-spacing: 1px;
+}
+
+#SignUpBtn {
+    background-color: rgb(25, 136, 30);
+    margin-bottom: 20px;
+    height: 30px;
+    width: 100px;
+    border-radius: 3px;
+    border: 1px black solid;
+    border: unset;
+    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
+    font-size: 15px;
+    letter-spacing: 0.5px;
+}
+
+/* ..............mWeb.............. */
+@media screen and (max-width: 800px) {
+    #wrapper {
+        width: 75%;
+    }
+}
+
+@media screen and (max-width: 450px) {
+    #wrapper {
+        width: 90%;
+    }
 }

@@ -5,7 +5,6 @@ body {
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    /* background-color: #86377b; */
     background-color: #f1f1f1;
   }
   
@@ -13,23 +12,17 @@ body {
     font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
       monospace;
   }
-  
-  #background {
-    background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
-    overflow: hidden;
-    width: 100%;
-    min-height: 100vh;
-  }
-  
+    
   #loadingScreen {
     font-size: 50px;
     color: white;
     text-align: center;
-    background-image: linear-gradient(to top, #86377b 20%, #27273c 80%);
+    background-color: #f1f1f1;
     overflow: hidden;
     min-height: 100vh;
     width: 100%;
     padding-top: 10%;
+    color: black;
   }
   
   #loadingScreen div:first-child {
@@ -39,7 +32,6 @@ body {
   #loadingIcon {
     text-align: center;
     transform: scale(0.5);
-    margin: -10px;
   }
   
   .lds-spinner {
@@ -62,7 +54,7 @@ body {
     width: 6px;
     height: 18px;
     border-radius: 20%;
-    background: #fff;
+    background: black;
   }
   .lds-spinner div:nth-child(1) {
     transform: rotate(0deg);
