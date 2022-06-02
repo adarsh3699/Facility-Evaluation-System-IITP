@@ -7,14 +7,15 @@ function CandidateSignUpPage() {
     return (
         <div>
             <div id="wrapper" className='CandidateSignUpWrapper'>
+                <div id='LoginUserTitle'>Candidate Login</div>
+                
                 <form id="form" >
                     <div>
-                        <div id='LoginUserTitle'>Candidate Login</div>
-                        <input type="text" placeholder="Email" id="email" />
+                        <input type="text" required placeholder="Email" id="email" />
                     </div>
 
                     <div>
-                        <input type="password" placeholder="Password" id="password" />
+                        <input type="password" required placeholder="Password" id="password" />
                     </div>
 
                     <div>
@@ -31,15 +32,15 @@ function CandidateSignUpPage() {
                 <div id='SignUpUserTitle'>Sign Up for Candidate</div>
                 <form id="form" >
                     <div>
-                        <input type="text" placeholder="Email" id="email" />
+                        <input type="text" required placeholder="Email" id="email" />
                     </div>
 
                     <div>
-                        <input type="password" placeholder="Password" id="password" />
+                        <input type="password" required placeholder="Password" id="password" />
                     </div>
 
                     <div>
-                        <input type="password" placeholder="Confirm Password" id="password" />
+                        <input type="password" required placeholder="Confirm Password" id="password" />
                     </div>
 
                     <div>

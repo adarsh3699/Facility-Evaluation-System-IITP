@@ -10,15 +10,15 @@ function FacultySignUpPage() {
                 <div id='LoginUserTitle'>Sign Up for Candidate</div>
                 <form id="form" >
                     <div>
-                        <input type="text" placeholder="Email" id="email" />
+                        <input type="text" required placeholder="Email" id="email" />
                     </div>
 
                     <div>
-                        <input type="password" placeholder="Password" id="password" />
+                        <input type="password" required placeholder="Password" id="password" />
                     </div>
 
                     <div>
-                        <input type="password" placeholder="Confirm Password" id="password" />
+                        <input type="password" required placeholder="Confirm Password" id="password" />
                     </div>
 
                     <div>

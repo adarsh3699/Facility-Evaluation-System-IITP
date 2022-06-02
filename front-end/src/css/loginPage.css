@@ -113,7 +113,7 @@
 }
 
 #SignUpBtn {
-    background-color: rgb(25, 136, 30);
+    background-color: rgb(32, 170, 39);
     margin-bottom: 20px;
     height: 30px;
     width: 100px;
@@ -123,6 +123,10 @@
     box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
     font-size: 15px;
     letter-spacing: 0.5px;
+}
+
+#SignUpBtn:hover {
+    background-color: rgb(28, 136, 36);
 }
 
 /* ..............mWeb.............. */
