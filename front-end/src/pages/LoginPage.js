@@ -19,7 +19,7 @@ function LoginPage() {
             return;
         }
     }, []);
-    
+
     async function handleLoginClick(e) {
         e.preventDefault();
         setApiLoading(true);
@@ -38,9 +38,9 @@ function LoginPage() {
                 if (userId && userTypeEncr) {
                     createCookie("userId", userId);
                     createCookie("userType", userTypeEncr);
-                    if (userTypeEncr == userTypeFaculty) {
+                    if (userTypeEncr === userTypeFaculty) {
                         document.location.href = "/faculty-page";
-                    } else if (userType == userTypeCandid) {
+                    } else if (userType === userTypeCandid) {
                         document.location.href = "/candidate-page";
                     }
                 } else {
@@ -58,7 +58,7 @@ function LoginPage() {
     return (
         <div>
             <div id="wrapper">
-                <div id='LoginUserTitle'>Faculty Login</div>
+                <div id='Title'>Login</div>
                 <form className="form" onSubmit={handleLoginClick}>
                     <input type="email" name='email' required placeholder="Email" className="email" />
                     <br /><br />
@@ -72,19 +72,15 @@ function LoginPage() {
                     </select>
                     <br /><br />
 
-                    <button id="loginBtn">Login</button>
+                    <button id="loginBtn" className={isApiLoading ? "loginBtnIsloading" : ""}>Login</button>
                 </form>
-                <div className="msg" >{msg}</div>
+                <div className="msg" style={{ marginBottom: "30px" }} >{msg}</div>
                 <Loader isLoading={isApiLoading} />
 
-                <div id='forgotFacultyPass'>
-                    <a href="/forget-password">Forgotten Password</a>
-                </div>
-
-                <hr />
+                <a href="/forget-password" id='forgotPass'>Forgotten Password</a>
 
                 <div id='SignUpBtnArea'>
-                    <a href="/signup" id='facultySignUpBtn'>Sign Up</a>
+                    <a href="/signup" id='SignUpPageBtn'>Sign Up</a>
                 </div>
             </div>
         </div>

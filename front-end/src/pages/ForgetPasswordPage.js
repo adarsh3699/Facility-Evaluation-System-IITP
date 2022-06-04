@@ -6,17 +6,48 @@ import "../css/loginPage.css";
 
 function ForgetPasswordPage() {
 
-    const [msg, setMsg] = useState("");
-    const [isApiLoading, setApiLoading] = useState(false);
+    const [emailVal, setEmailValsg] = useState("");
+    const [encryptedOtp, setEncryptedOtp] = useState("");
 
-    async function handleFacultyLoginForm(e) {
+    const [otpMsg, setOtpMsg] = useState("");
+    const [msg, setMsg] = useState("");
+
+    const [isOTPApiLoading, setIsOTPApiLoading] = useState(false);
+    const [isApiLoading, setApiLoading] = useState(false);
+    const [showChangePassForm, setShowChangePassForm] = useState(false);
+
+    function handleEmailValue(e) {
+        setEmailValsg(e.target.value);
+    }
+
+    async function handleSendOtpBtnClick() {
+        if (emailVal && emailVal.length > 5) {
+            setIsOTPApiLoading(true);
+            const apiResp = await apiCall("auth/forget-password", "POST", { email: emailVal });
+            if (apiResp.statusCode === 200) {
+                setShowChangePassForm(true)
+                setOtpMsg(apiResp.msg);
+                setEncryptedOtp(apiResp.otp)
+                console.log(apiResp.otp);
+            } else {
+                setOtpMsg(apiResp.msg)
+            }
+            setIsOTPApiLoading(false)
+        } else {
+            setOtpMsg("Please Enter Your Email")
+        }
+    }
+
+    async function handleConfirmPasswordClick(e) {
+        console.log(encryptedOtp);
         e.preventDefault();
         setApiLoading(true);
-        const email = e.target.email.value;
+        const otp = e.target.otp.value;
         const password = e.target.password.value;
+        const confPassword = e.target.confPassword.value;
 
-        if (email && password) {
-            const apiResp = await apiCall("login/faculty?email=" + email + "&password=" + password);
+        if (password && confPassword) {
+            const apiResp = await apiCall("auth/change-password", "POST", { email: emailVal, password, encryptedOtp, otp });
             if (apiResp.statusCode === 200) {
                 setApiLoading(false)
                 setMsg(apiResp.msg)
@@ -31,32 +62,31 @@ function ForgetPasswordPage() {
     return (
         <div>
             <div id="wrapper">
-                <form className="form" onSubmit={handleFacultyLoginForm}>
-                    <div>
-                        <input type="email" name='email' required placeholder="Email" className="email" />
-                    </div>
-
-                    <div>
-                        <input type="password" name='password' required pattern="().{8,}" placeholder="Password (Min 8 digit)" className="password" />
-                    </div>
-
-                    <div>
-                        <input type="password" name='confPassword' required pattern="().{8,}" placeholder="Confirm Password (Min 8 digit)" className="password" />
-                    </div>
+                <div id='Title'>Forget Password</div>
+                <form onSubmit={(e) => e.preventDefault()} style={showChangePassForm ? { display: "none" } : { display: "block" }} >
+                    <input type="email" className="email" onChange={handleEmailValue} value={emailVal} placeholder="Email" />
+                    <br />
+                    <button id='sendOtpBtn' onClick={handleSendOtpBtnClick}>Send OTP</button>
+                    <br /><br />
+                    <div className="msg" >{otpMsg}</div>
+                    <Loader isLoading={isOTPApiLoading} />
+                    <br />
                 </form>
-                <div className="msg" >{msg}</div>
-                {/* <Loader isLoading={true} /> */}
 
-                <div id='forgotFacultyPass'>
-                    <a href="/FacultySignUpPage">Forgotten Password</a>
-                </div>
+                <form className="form" style={showChangePassForm ? { display: "block" } : { display: "none" }} onSubmit={handleConfirmPasswordClick}>
+                    <input type="number" name='otp' required placeholder="Enter OTP" className="email" />
+                    <br /><br />
+                    <input type="password" name='password' required pattern="().{8,}" placeholder="New Password (Min 8 digit)" className="password" />
+                    <br /><br />
+                    <input type="password" name='confPassword' required pattern="().{8,}" placeholder="Confirm Password (Min 8 digit)" className="password" />
+                    <br /> <br />
+                    <button id="loginBtn" className={isApiLoading ? "loginBtnIsloading" : ""}>Confirm Password</button>
+                    <div className="msg" >{msg}</div>
+                    {/* <Loader isLoading={true} /> */}
+                </form>
 
-                <hr />
+                <a href="/" id='forgotPass'>Back to Login Page</a>
 
-                <div id='SignUpBtnArea'>
-                    <a href="/FacultySignUp" id='facultySignUpBtn'>Sign Up for Faculty</a>
-                    <a href="/CandidateSignUp" id='candidateSignUpLoginBtn'>Sign Up/Login for Candidate</a>
-                </div>
             </div>
         </div>
     );

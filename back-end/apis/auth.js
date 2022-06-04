@@ -1,7 +1,7 @@
 const express = require('express');
 var url = require('url')
 var mysql = require('mysql');
-const { sendMail, md5Hash, encryptText } = require('../helpers');
+const { sendMail, md5Hash, encryptText, decryptText } = require('../helpers');
 
 //setting express
 const app = express();
@@ -76,7 +76,7 @@ app.post('/register', function (req, res) {
                         res.status(toSend.statusCode);
                         res.send(toSend);
                     }
-                    toSend.data = results;
+                    // toSend.data = results;
                 }
             });
         } else {
@@ -104,8 +104,8 @@ app.post('/login', function (req, res) {
             dbConnect.query("SELECT id, email, isVerified FROM users WHERE email = '" + email + "' AND password = '" + password + "' AND userType ='" + userType + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
-                    toSend.msg = error?.sqlMessage || "query failed";
-                    toSend.statusCode = 400;
+                    toSend.msg = error?.sqlMessage || "Something went wrong";
+                    toSend.statusCode = 500;
                 } else {
                     if (results == "") {
                         res.status(400);
@@ -117,12 +117,11 @@ app.post('/login', function (req, res) {
                             const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
                             sendMail(email, "Email Verfication", "Verify your email at \n" + emailValidationLink);
                             toSend.statusCode = 400;
-                            toSend.msg = "Your account is not Verified please check uour mail for verification";
-                            toSend.email = emailValidationLink;
+                            toSend.msg = "Your account is not Verified please check your mail for verification";
                         } else {
                             toSend.statusCode = 200;
                             toSend.msg = "Login successful";
-                            toSend.data= {
+                            toSend.data = {
                                 id: encryptText(results[0]?.id + ""),
                                 userType: md5Hash(userType),
                             }
@@ -144,6 +143,69 @@ app.post('/login', function (req, res) {
     }
 });
 
+app.post('/forget-password', function (req, res) {
+    const email = req.body.email;
+    try {
+        if (email) {
+            let toSend = {}
+            const otp = Math.floor(1000 + Math.random() * 9000);
+    
+            sendMail(email, "Email Verfication", "Your OTP Is \n" + otp);
+            toSend.statusCode = 200;
+            toSend.msg = "OTP sent successfully";
+            toSend.otp = encryptText(otp + "")
+    
+            res.status(toSend.statusCode);
+            res.send(toSend);
+        } else {
+            res.status(400);
+            res.send({ statusCode: 400, msg: "Please Enter Your Email" });
+        }
+        
+    } catch (e) {
+        res.send("something went wrong");
+        console.log(e);
+    }
+});
 
-//exporting this file so that it can be used at other places
+app.post('/change-password', function (req, res) {
+    const email = req.body.email;
+    const password = md5Hash(req.body.password);
+    const otp = req.body.otp;
+    const encryptedOtp = decryptText(req.body.encryptedOtp);
+
+    try {
+        if (email && req.body.password && otp && req.body.encryptedOtp) {
+            if (otp == encryptedOtp) {
+                if (dbConnect.state !== "authenticated") {
+                    res.status(500);
+                    res.send({ statusCode: 500, msg: "db connection failed" });
+                    return;
+                }
+                dbConnect.query("UPDATE users SET `password` = '" + password + "' WHERE email = '" + email + "'", function (error, results, fields) {
+                    let toSend = {};
+                    if (error) {
+                        toSend.msg = error?.sqlMessage || "Something went wrong";
+                        toSend.statusCode = 500;
+                    } else {
+                        toSend.statusCode = 200;
+                        toSend.msg = "Forgotten password successful";
+                    }
+                    res.status(toSend.statusCode);
+                    res.send(toSend);
+                })
+            } else {
+                res.status(400);
+                res.send({ statusCode: 400, msg: "OTP does not match" });
+            }
+        } else {
+            res.status(400);
+            res.send({ statusCode: 400, msg: "Please provide all details" });
+        }
+    } catch (e) {
+        res.send("something went wrong");
+    }
+});
+
+
 module.exports = app;

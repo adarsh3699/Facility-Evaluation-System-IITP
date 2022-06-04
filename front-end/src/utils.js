@@ -17,7 +17,7 @@ async function apiCall(endpoint, method, body) {
     const apiUrl =  apiBaseUrl + endpoint;
     try {
         let apiCallResp;
-        if (method == "GET" || method == undefined) {
+        if (method === "GET" || method === undefined) {
             apiCallResp = await fetch(apiUrl);
         } else {
             apiCallResp = await fetch(apiUrl, {

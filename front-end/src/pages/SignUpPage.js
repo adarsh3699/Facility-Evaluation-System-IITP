@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { apiCall } from "../utils";
 import Loader from "../components/Loader";
 
@@ -16,7 +16,7 @@ function SignUpPage() {
         const confPassword = e.target.confPassword.value;
         const userType = e.target.userType.value;
 
-        if (password == confPassword) {
+        if (password === confPassword) {
             const apiResp = await apiCall("auth/register", "POST", {
                 email, password, userType
             });
@@ -34,7 +34,7 @@ function SignUpPage() {
     return (
         <div>
             <div id="wrapper">
-                <div id='LoginUserTitle'>Sign Up for Faculty</div>
+                <div id='Title'>Sign Up</div>
                 <form className="form" onSubmit={handleSignUpClick} >
                     <input type="email" name='email' required placeholder="Email" className="email" />
                     <br /><br />
@@ -51,8 +51,8 @@ function SignUpPage() {
                     <button id="SignUpBtn" className={isApiLoading ? "SignUpBtnIsloading" : ""}>Sign Up</button>
                     <br /><br />
 
-                    <Loader isLoading={isApiLoading} />
                     <div className="msg" >{msg}</div>
+                    <Loader isLoading={isApiLoading} />
                 </form>
             </div>
         </div>
