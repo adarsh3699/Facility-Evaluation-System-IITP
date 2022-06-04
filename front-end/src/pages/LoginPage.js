@@ -4,24 +4,25 @@ import Loader from "../components/Loader";
 import "../css/loginPage.css";
 
 function LoginPage() {
+
     return (
         <div>
             <div id="wrapper">
-                <form id="form" >
+                <form className="form">
                     <div>
                         <div id='LoginUserTitle'>Faculty Login</div>
-                        <input type="text" required placeholder="Email" id="email" />
+                        <input type="email" required placeholder="Email" className="email" />
                     </div>
 
                     <div>
-                        <input type="password" required placeholder="Password" id="password" />
+                        <input type="password" required placeholder="Password" className="password" />
                     </div>
 
                     <div>
                         <button id="loginBtn">Login</button>
                     </div>
                 </form>
-                    <div id="msg" > msg </div>
+                    <div className="msg" > msg </div>
                     {/* <Loader isLoading={true} /> */}
 
                     <div id='forgotFacultyPass'>
@@ -32,7 +33,7 @@ function LoginPage() {
                     
                     <div id='SignUpBtnArea'>
                         <a href="/FacultySignUp" id='facultySignUpBtn'>Sign Up for Faculty</a>
-                        <a href="/CandidateSignUp" id='candidateSignUpBtn'>Sign Up/Login for Candidate</a>
+                        <a href="/CandidateSignUp" id='candidateSignUpLoginBtn'>Sign Up/Login for Candidate</a>
                     </div>
             </div>
         </div>

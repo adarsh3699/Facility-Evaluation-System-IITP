@@ -1,3 +1,36 @@
+const { enc, AES, MD5 } = require("crypto-js");
+
+const encryptionKey = "bhemu_is_kutta";
+
+function encryptText(text) {
+    try {
+        const encryptedValue = AES.encrypt(text, encryptionKey).toString();
+        return encryptedValue;
+    } catch {
+        return null;
+    }
+}
+
+function decryptText(enryptedValue) {
+    let value = null;
+    try {
+        const decrypted = AES.decrypt(enryptedValue, encryptionKey);
+        value = enc.Utf8.stringify(decrypted);
+    } catch {
+        return null;
+    }
+
+    return value;
+}
+
+function md5Hash(text) {
+    try {
+        return MD5(text).toString();
+    } catch {
+        return null;
+    }
+}
+
 function runQuery(dbConnect, query, res, isSpecialCase) {
     try {
         if (dbConnect.state !== "authenticated") {
@@ -36,4 +69,4 @@ function runQuery(dbConnect, query, res, isSpecialCase) {
     }
 }
 
-module.exports = { runQuery };
+module.exports = { encryptText, decryptText, md5Hash, runQuery };

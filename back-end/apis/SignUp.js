@@ -1,6 +1,6 @@
 const express = require('express');
 var mysql = require('mysql');
-const { runQuery } = require('../helpers');
+const { runQuery, md5Hash } = require('../helpers');
 
 //setting express
 const app = express();
@@ -16,7 +16,7 @@ dbConnect.connect(function (error) { });
 
 app.get('/candidate', function (req, res) {
     const email = req.query.email;
-    const password = req.query.password;
+    const password = md5Hash(req.query.password);
     try {
         if (email && password) {
             if (dbConnect.state !== "authenticated") {
@@ -60,6 +60,7 @@ app.get('/candidate', function (req, res) {
                             }
                         });
                     } else {
+                        toSend.statusCode = 400;
                         toSend.msg = "Account already exists";
                         res.status(toSend.statusCode);
                         res.send(toSend);
@@ -81,7 +82,7 @@ app.get('/candidate', function (req, res) {
 //for faculty
 app.get('/faculty', function (req, res) {
     const email = req.query.email;
-    const password = req.query.password;
+    const password = md5Hash(req.query.password);
     try {
         if (email && password) {
             if (dbConnect.state !== "authenticated") {

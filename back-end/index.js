@@ -30,7 +30,7 @@ app.get('/api', function(req, res) {
   res.send("apis");
 });
 
-app.use('/api/registeredEmail', require('./apis/registeredEmail'));
+app.use('/api/SignUp', require('./apis/SignUp'));
 // app.use('/api/notes', require('./apis/notes'));
 // app.use('/api/notesElement', require('./apis/notesElement'));
 
