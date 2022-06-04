@@ -1,6 +1,18 @@
 const { enc, AES, MD5 } = require("crypto-js");
+const nodemailer = require('nodemailer');
 
 const encryptionKey = "bhemu_is_kutta";
+const accountTitle = "Bhemu";
+const mailerDetails = {
+    host: "smtp-mail.outlook.com", // hostname
+    secureConnection: false, // TLS requires secureConnection to be false
+    port: 587, // port for secure SMTP
+    tls: { ciphers:'SSLv3' },
+    auth: {
+        user: 'adityasuman2025@live.com',
+        pass: 'adarsh&1234'
+    }
+}
 
 function encryptText(text) {
     try {
@@ -69,4 +81,28 @@ function runQuery(dbConnect, query, res, isSpecialCase) {
     }
 }
 
-module.exports = { encryptText, decryptText, md5Hash, runQuery };
+function sendMail(mailTo, mailSubject, mailBody) {
+    try {
+        //mailing to the new user
+        const transporter = nodemailer.createTransport(mailerDetails);
+    
+        const mailOptions = {
+            from: accountTitle + " <" + mailerDetails.auth.user + ">",
+            to: mailTo,
+            subject: mailSubject,
+            text: mailBody
+        }
+    
+        transporter.sendMail(mailOptions, function (err, info) {
+            if (err){
+                console.log("mail sending ", err);
+            } else {
+                console.log('mail sent');
+            }
+        });
+    } catch (e) {
+        console.log("fail to send mail ", e)
+    }
+}
+
+module.exports = { encryptText, decryptText, md5Hash, runQuery, sendMail };
