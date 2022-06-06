@@ -34,13 +34,14 @@ function LoginPage() {
             if (apiResp.statusCode === 200) {
                 setMsg(apiResp.msg)
                 const userId = apiResp?.data?.id;
-                const userTypeEncr = apiResp?.data?.userType;
+                const userTypeEncr = (apiResp?.data?.userType).trim();
                 if (userId && userTypeEncr) {
                     createCookie("userId", userId);
                     createCookie("userType", userTypeEncr);
+                    console.log(userTypeEncr === userTypeCandid)
                     if (userTypeEncr === userTypeFaculty) {
                         document.location.href = "/faculty-page";
-                    } else if (userType === userTypeCandid) {
+                    } else if (userTypeEncr === userTypeCandid) {
                         document.location.href = "/candidate-page";
                     }
                 } else {

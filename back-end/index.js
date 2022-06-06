@@ -31,6 +31,7 @@ app.get('/api', function(req, res) {
 });
 
 app.use('/api/auth', require('./apis/auth'));
+app.use('/api/candidate', require('./apis/candidate'));
 
 app.use('/verifyAccount', require('./apis/verifyAccount'));
 

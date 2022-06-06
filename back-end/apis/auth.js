@@ -34,38 +34,58 @@ app.post('/register', function (req, res) {
             dbConnect.query("SELECT * FROM users WHERE email = '" + email + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
-                    toSend.msg = error?.sqlMessage || "query failed";
-                    toSend.statusCode = 400;
+                    res.status(500);
+                    res.send({ statusCode: 500, msg: error?.sqlMessage || "query failed" });
                 } else {
                     toSend.statusCode = 200;
                     if (results == "") {
                         const query2 = "SELECT email FROM " + emailLoopUpTable(userType) + " WHERE email = '" + email + "'";
                         dbConnect.query(query2, function (error2, results2, fields2) {
                             if (error2) {
-                                toSend.msg = error2?.sqlMessage || "query failed";
-                                toSend.statusCode = 400;
+                                res.status(500);
+                                res.send({ statusCode: 500, msg: error2?.sqlMessage || "query failed" });
                             } else {
                                 if (results2 == "") {
                                     toSend.statusCode = 400;
                                     toSend.msg = "Your Email is not registered in Our DataBase";
-                                    toSend.data = results2;
                                     res.status(toSend.statusCode);
                                     res.send(toSend);
                                 } else {
+
                                     dbConnect.query("INSERT INTO `users` (`email`, `password`, `userType`) VALUES ('" + email + "', '" + password + "', '" + userType + "')", function (error3, results3, fields3) {
                                         if (error3) {
-                                            toSend.msg = error3?.sqlMessage || "query failed";
-                                            toSend.statusCode = 400;
+                                            res.status(500);
+                                            res.send({ statusCode: 500, msg: error3?.sqlMessage || "query failed" });
                                         } else {
                                             const baseUrl = 'http://' + req.headers.host;
                                             const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
                                             sendMail(email, "Email Verfication", "Verify your email at \n" + emailValidationLink);
-                                            toSend.statusCode = 200;
-                                            toSend.msg = "Sign up successful";
-                                            toSend.data = emailValidationLink;
+
+                                            const insertId = results3.insertId;
+
+                                            if (userType == 2) {
+                                                dbConnect.query("INSERT INTO `CandidateInfo` (`userId`, `name`, `applicationNumber`, `email`, `department`, `designation`, `titleOfTheTalk`, `researchTopic`, `Keyword1`, `Keyword2`, `Keyword3`, `Keyword4`) VALUES ('" + userType + "', '', '', '" + email + "', '', '', '', '', '', '', '', '')", function (error4, results4, fields4) {
+                                                    if (error4) {
+                                                        res.status(500);
+                                                        res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
+                                                    } else {
+                                                        toSend.statusCode = 200;
+                                                        toSend.msg = "Sign up successful";
+                                                    }
+                                                    res.status(toSend.statusCode);
+                                                    res.send(toSend);
+                                                });
+                                            } else if (userType == 1) {
+                                                res.status(toSend.statusCode);
+                                                toSend.statusCode = 200;
+
+                                                toSend.msg = "Sign up successful";
+                                                res.send(toSend);
+                                            } else {
+                                                res.status(400);
+                                                res.send({ statusCode: 400, msg: "Wrong userType" });
+                                            }
                                         }
-                                        res.status(toSend.statusCode);
-                                        res.send(toSend);
                                     });
                                 }
                             }
@@ -76,7 +96,6 @@ app.post('/register', function (req, res) {
                         res.status(toSend.statusCode);
                         res.send(toSend);
                     }
-                    // toSend.data = results;
                 }
             });
         } else {
@@ -104,8 +123,8 @@ app.post('/login', function (req, res) {
             dbConnect.query("SELECT id, email, isVerified FROM users WHERE email = '" + email + "' AND password = '" + password + "' AND userType ='" + userType + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
-                    toSend.msg = error?.sqlMessage || "Something went wrong";
-                    toSend.statusCode = 500;
+                    res.status(500);
+                    res.send({ statusCode: 500, msg: "Something went wrong" });
                 } else {
                     if (results == "") {
                         res.status(400);
@@ -149,22 +168,22 @@ app.post('/forget-password', function (req, res) {
         if (email) {
             let toSend = {}
             const otp = Math.floor(1000 + Math.random() * 9000);
-    
-            sendMail(email, "Email Verfication", "Your OTP Is \n" + otp);
+
+            sendMail(email, "Forgot Password", "Your OTP Is \n" + otp);
             toSend.statusCode = 200;
             toSend.msg = "OTP sent successfully";
             toSend.otp = encryptText(otp + "")
-    
+
             res.status(toSend.statusCode);
             res.send(toSend);
         } else {
             res.status(400);
             res.send({ statusCode: 400, msg: "Please Enter Your Email" });
         }
-        
+
     } catch (e) {
-        res.send("something went wrong");
-        console.log(e);
+        res.status(500);
+        res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
     }
 });
 
@@ -189,21 +208,22 @@ app.post('/change-password', function (req, res) {
                         toSend.statusCode = 500;
                     } else {
                         toSend.statusCode = 200;
-                        toSend.msg = "Forgotten password successful";
+                        toSend.msg = "Password updated successfully";
                     }
                     res.status(toSend.statusCode);
                     res.send(toSend);
                 })
             } else {
                 res.status(400);
-                res.send({ statusCode: 400, msg: "OTP does not match" });
+                res.send({ statusCode: 400, msg: "OTP do not match" });
             }
         } else {
             res.status(400);
             res.send({ statusCode: 400, msg: "Please provide all details" });
         }
     } catch (e) {
-        res.send("something went wrong");
+        res.status(500);
+        res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
     }
 });
 
