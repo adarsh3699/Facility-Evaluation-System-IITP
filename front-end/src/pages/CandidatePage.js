@@ -1,9 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import { getCookie, userTypeCandid, apiCall } from "../utils";
+import Loader from "../components/Loader";
 
 import "../css/candidatePage.css"
 
+const expiryDate = "2022-09-28T22:59:02.448804522Z";
+
 function CandidatePage() {
+    const [isDateExpire, setIsDateExpire] = useState(false);
+    const [isSubmitApiLoading, setIsSubmitApiLoading] = useState(false);
+    const [msg, setMsg] = useState(false);
 
     const [name, setName] = useState("");
     const [applicationNumber, setApplicationNumber] = useState("");
@@ -38,78 +44,98 @@ function CandidatePage() {
                     setkeyword2(apiResp?.data[0]?.Keyword2)
                     setkeyword3(apiResp?.data[0]?.Keyword3)
                     setkeyword4(apiResp?.data[0]?.Keyword4)
-                } else {
+                    const addedOn = apiResp?.data[0]?.addedOn;
 
+                    // console.log("expiryDate", new Date(expiryDate).getTime());
+                    // console.log("addedOn", new Date(addedOn).getTime());
+                    if (new Date(expiryDate).getTime() < new Date(addedOn).getTime()) {
+                        setIsDateExpire(true);
+                        setMsg("The deadline for submission has expired.")
+                    }
+                } else {
+                    setMsg(apiResp.msg)
                 }
             })();
         }
     }, []);
 
     function handleNameValue(e) {
-        setName(e.target.value)
+        setName(e.target.value);
     }
 
     function handleApplicationNumberValue(e) {
-        setApplicationNumber(e.target.value)
+        setApplicationNumber(e.target.value);
     }
 
     function handleEmailValue(e) {
-        setEmail(e.target.value)
+        setEmail(e.target.value);
     }
 
     function handleDepartmentValue(e) {
-        setDepartment(e.target.value)
+        setDepartment(e.target.value);
     }
 
     function handleDesignationValue(e) {
-        setDesignation(e.target.value)
+        setDesignation(e.target.value);
     }
 
     function handleTitleOfTheTalkValue(e) {
-        setTitleOfTheTalk(e.target.value)
+        setTitleOfTheTalk(e.target.value);
     }
 
     function handleResearchTopicValue(e) {
-        setResearchTopic(e.target.value)
+        setResearchTopic(e.target.value);
     }
 
     function handleKeyword1Value(e) {
-        setkeyword1(e.target.value)
+        setkeyword1(e.target.value);
     }
 
     function handleKeyword2Value(e) {
-        setkeyword2(e.target.value)
+        setkeyword2(e.target.value);
     }
 
     function handleKeyword3Value(e) {
-        setkeyword3(e.target.value)
+        setkeyword3(e.target.value);
     }
 
     function handleKeyword4Value(e) {
-        setkeyword4(e.target.value)
+        setkeyword4(e.target.value);
+    }
+
+    async function handleFormSubmit(e) {
+        e.preventDefault();
+        setIsSubmitApiLoading(true);
+        const apiResp = await apiCall("candidate?userId=" + getCookie("userId"), "POST", { name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
+        if (apiResp.statusCode === 200) {
+            setMsg(apiResp.msg)
+        } else {
+            setMsg(apiResp.msg)
+        }
+        setIsSubmitApiLoading(false);
     }
 
 
     return (
         <div>
             <div id='title'>Candidate Page</div>
-            <form id='CandidatePageForm'>
+            <form id='CandidatePageForm' onSubmit={handleFormSubmit}>
                 <div className='lableInputBox'>
                     <label>Name of the Applicant</label>
-                    <input type='text' value={name} onChange={handleNameValue} />
+                    <input type='text' value={name} readOnly={isDateExpire} onChange={handleNameValue} />
                 </div>
 
                 <div className='lableInputBox'>
                     <label>Application Number</label>
-                    <input type='number' value={applicationNumber} onChange={handleApplicationNumberValue} />
+                    <input type='number' value={applicationNumber} readOnly={isDateExpire} onChange={handleApplicationNumberValue} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Email</label>
-                    <input type='email' value={email} onChange={handleEmailValue} />
+                    <input type='email' value={email} readOnly={isDateExpire} onChange={handleEmailValue} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Department Applied for</label>
-                    <select value={department} onChange={handleDepartmentValue}>
+                    <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue}>
                         <option>A</option>
                         <option>B</option>
                         <option>C</option>
@@ -117,7 +143,7 @@ function CandidatePage() {
                 </div>
                 <div className='lableInputBox'>
                     <label>Designation Applied for</label>
-                    <select value={designation} onChange={handleDesignationValue}>
+                    <select value={designation} disabled={isDateExpire} onChange={handleDesignationValue}>
                         <option>Assistant</option>
                         <option>Professor</option>
                         <option>Asso</option>
@@ -125,30 +151,34 @@ function CandidatePage() {
                 </div>
                 <div className='lableInputBox'>
                     <label>Title of the Talk</label>
-                    <textarea value={titleOfTheTalk} onChange={handleTitleOfTheTalkValue}></textarea>
+                    <textarea value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue}></textarea>
                 </div>
                 <div className='lableInputBox'>
                     <label>Broad Area of Research Topic</label>
-                    <input type='text' value={researchTopic} onChange={handleResearchTopicValue} />
+                    <input type='text' value={researchTopic} readOnly={isDateExpire} onChange={handleResearchTopicValue} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 1 of research area</label>
-                    <input type='text' value={keyword1} onChange={handleKeyword1Value} />
+                    <input type='text' value={keyword1} readOnly={isDateExpire} onChange={handleKeyword1Value} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 2 of research area</label>
-                    <input type='text' value={keyword2} onChange={handleKeyword2Value} />
+                    <input type='text' value={keyword2} readOnly={isDateExpire} onChange={handleKeyword2Value} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 3 of research area</label>
-                    <input type='text' value={keyword3} onChange={handleKeyword3Value} />
+                    <input type='text' value={keyword3} readOnly={isDateExpire} onChange={handleKeyword3Value} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 4 of research area</label>
-                    <input type='text' value={keyword4} onChange={handleKeyword4Value} />
+                    <input type='text' value={keyword4} readOnly={isDateExpire} onChange={handleKeyword4Value} />
                 </div>
-                <button id='submitBtn'>Submit</button>
+                <button id='submitBtn' className={isDateExpire ? "submitBtnLoading" : ""} >Submit</button>
+                
+                <div id="msg" >{msg}</div>
+                <Loader  isLoading={isSubmitApiLoading} id='loader' />
             </form>
+
         </div>
     );
 }

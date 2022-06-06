@@ -2,7 +2,7 @@ import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
 // const apiBaseUrl = "https://bhemu-notes.herokuapp.com/api/"
-const apiBaseUrl = "http://localhost:4000/api/";
+const apiBaseUrl = "http://localhost:4000/";
 const userTypeFaculty = "c4ca4238a0b923820dcc509a6f75849b";
 const userTypeCandid = "c81e728d9d4c2f636f067f89cc14862c";
 

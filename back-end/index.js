@@ -26,12 +26,8 @@ app.get('/', function(req, res) {
   res.send("hello world");
 });
 
-app.get('/api', function(req, res) {
-  res.send("apis");
-});
-
-app.use('/api/auth', require('./apis/auth'));
-app.use('/api/candidate', require('./apis/candidate'));
+app.use('/auth', require('./apis/auth'));
+app.use('/candidate', require('./apis/candidate'));
 
 app.use('/verifyAccount', require('./apis/verifyAccount'));
 
