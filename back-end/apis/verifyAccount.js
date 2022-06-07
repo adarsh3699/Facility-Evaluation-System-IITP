@@ -16,7 +16,7 @@ app.get('/', function (req, res) {
             const decodedKa = atob(ka);
             const email = decryptText(decodedKa);
             if (!email) {
-                res.send("invalid email");
+                res.send("<center><h1>Invalid email</h1></center>");
                 return;
             }
 
@@ -27,16 +27,16 @@ app.get('/', function (req, res) {
             
             dbConnect.query("UPDATE users SET isVerified = 1 WHERE email = '" + email + "'", function (error, results, fields) {
                 if (error) {
-                    res.send("failed to verify account");
+                    res.send("<center><h1>Failed to verify account</h1></center>");
                 } else {
-                    res.send("account successfully verified");
+                    res.send("<center><h1>Account successfully verified</h1></center>");
                 }
             });
         } else {
-            res.send("invalid url")
+            res.send("<center><h1>Invalid url</h1></center>")
         }
     } catch (e) {
-        res.send("something went wrong");
+        res.send("<center><h1>Something went wrong</h1></center>");
     }
 });
 

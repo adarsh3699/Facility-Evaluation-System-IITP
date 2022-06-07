@@ -52,7 +52,7 @@ app.post('/register', function (req, res) {
                                         } else {
                                             const baseUrl = 'http://' + req.headers.host;
                                             const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
-                                            sendMail(email, "Email Verfication", "Verify your email at \n" + emailValidationLink);
+                                            sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
 
                                             const insertId = results3.insertId;
 
@@ -125,9 +125,11 @@ app.post('/login', function (req, res) {
                     } else {
                         const verifyAccount = results[0]?.isVerified;
                         if (verifyAccount === 0) {
+                            
                             const baseUrl = 'http://' + req.headers.host;
                             const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
-                            sendMail(email, "Email Verfication", "Verify your email at \n" + emailValidationLink);
+                            sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
+                            
                             toSend.statusCode = 400;
                             toSend.msg = "Your account is not Verified please check your mail for verification";
                         } else {
@@ -162,7 +164,7 @@ app.post('/forget-password', function (req, res) {
             let toSend = {}
             const otp = Math.floor(1000 + Math.random() * 9000);
 
-            sendMail(email, "Forgot Password", "Your OTP Is \n" + otp);
+            sendMail(email, "Forgot Password", "Your OTP is", otp);
             toSend.statusCode = 200;
             toSend.msg = "OTP sent successfully";
             toSend.otp = encryptText(otp + "")
