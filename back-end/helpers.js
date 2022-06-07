@@ -1,3 +1,4 @@
+var mysql = require('mysql');
 const { enc, AES, MD5 } = require("crypto-js");
 const nodemailer = require('nodemailer');
 
@@ -13,6 +14,14 @@ const mailerDetails = {
         pass: 'adarsh&1234'
     }
 }
+
+//mysql databse connection
+const dbConnect = mysql.createConnection({
+    host: "localhost",
+    user: "root",
+    password: "",
+    database: 'sir-project'
+});
 
 function encryptText(text) {
     try {
@@ -105,4 +114,4 @@ function sendMail(mailTo, mailSubject, mailBody) {
     }
 }
 
-module.exports = { encryptText, decryptText, md5Hash, runQuery, sendMail };
+module.exports = { dbConnect, encryptText, decryptText, md5Hash, runQuery, sendMail };

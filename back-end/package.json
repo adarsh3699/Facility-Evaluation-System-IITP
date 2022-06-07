@@ -12,8 +12,9 @@
     "body-parser": "^1.18.3",
     "crypto-js": "^4.1.1",
     "express": "^4.17.3",
+    "googleapis": "^100.0.0",
     "mysql": "^2.16.0",
-    "nodemon": "^2.0.16",
-    "nodemailer": "^4.6.7"
+    "nodemailer": "^4.6.7",
+    "nodemon": "^2.0.16"
   }
 }

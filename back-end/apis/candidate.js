@@ -1,17 +1,11 @@
 const express = require('express');
 var mysql = require('mysql');
-const { decryptText } = require('../helpers');
+const { decryptText, dbConnect } = require('../helpers');
 
 //setting express
 const app = express();
 
 //mysql databse connection
-const dbConnect = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: 'sir-project'
-});
 dbConnect.connect(function (error) { });
 
 //get candidate data

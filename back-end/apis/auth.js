@@ -1,18 +1,11 @@
 const express = require('express');
 var url = require('url')
-var mysql = require('mysql');
-const { sendMail, md5Hash, encryptText, decryptText } = require('../helpers');
+const { sendMail, md5Hash, encryptText, decryptText, dbConnect } = require('../helpers');
 
 //setting express
 const app = express();
 
 //mysql databse connection
-const dbConnect = mysql.createConnection({
-    host: "localhost",
-    user: "root",
-    password: "",
-    database: 'sir-project'
-});
 dbConnect.connect(function (error) { });
 
 function emailLoopUpTable(userType) {
