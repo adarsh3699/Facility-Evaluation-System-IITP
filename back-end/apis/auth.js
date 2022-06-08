@@ -57,7 +57,7 @@ app.post('/register', function (req, res) {
                                             const insertId = results3.insertId;
 
                                             if (userType == 2) {
-                                                dbConnect.query("INSERT INTO `CandidateInfo` (`userId`, `name`, `applicationNumber`, `email`, `department`, `designation`, `titleOfTheTalk`, `researchTopic`, `Keyword1`, `Keyword2`, `Keyword3`, `Keyword4`) VALUES ('" + userType + "', '', '', '" + email + "', '', '', '', '', '', '', '', '')", function (error4, results4, fields4) {
+                                                dbConnect.query("INSERT INTO `CandidateInfo` (`userId`, `name`, `applicationNumber`, `email`, `department`, `designation`, `titleOfTheTalk`, `researchTopic`, `Keyword1`, `Keyword2`, `Keyword3`, `Keyword4`) VALUES ('" + insertId + "', '', '', '" + email + "', '', '', '', '', '', '', '', '')", function (error4, results4, fields4) {
                                                     if (error4) {
                                                         res.status(500);
                                                         res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });

@@ -5,6 +5,7 @@ import Loader from "../components/Loader";
 import "../css/candidatePage.css"
 
 const expiryDate = "2022-09-28T22:59:02.448804522Z";
+const userId = getCookie("userId")
 
 function CandidatePage() {
     const [isDateExpire, setIsDateExpire] = useState(false);
@@ -30,7 +31,7 @@ function CandidatePage() {
             return;
         } else {
             (async function getData() {
-                const apiResp = await apiCall("candidate?userId=" + getCookie("userId"));
+                const apiResp = await apiCall("candidate", "POST", {userId});
                 if (apiResp.statusCode === 200) {
 
                     setName(apiResp?.data[0]?.name)
@@ -106,7 +107,7 @@ function CandidatePage() {
     async function handleFormSubmit(e) {
         e.preventDefault();
         setIsSubmitApiLoading(true);
-        const apiResp = await apiCall("candidate?userId=" + getCookie("userId"), "POST", { name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
+        const apiResp = await apiCall("candidate/post", "POST", { userId, name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
         if (apiResp.statusCode === 200) {
             setMsg(apiResp.msg)
         } else {
@@ -151,7 +152,7 @@ function CandidatePage() {
                 </div>
                 <div className='lableInputBox'>
                     <label>Title of the Talk</label>
-                    <textarea value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue}></textarea>
+                    <input type='text' value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Broad Area of Research Topic</label>

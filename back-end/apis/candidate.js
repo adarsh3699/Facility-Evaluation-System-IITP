@@ -9,9 +9,10 @@ const app = express();
 dbConnect.connect(function (error) { });
 
 //get candidate data
-app.get('/', function (req, res) {
-    const userId = decryptText(req.query.userId);
-    if (req.query.userId) {
+app.post('/', function (req, res) {
+    const userId = decryptText(req.body.userId);
+
+    if (req.body.userId) {
         try {
             dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4, addedOn FROM `CandidateInfo` WHERE userId = '" + userId + "'", function (error, results, fields) {
                 let toSend = {};
@@ -37,8 +38,8 @@ app.get('/', function (req, res) {
 });
 
 //post candidate data
-app.post('/', function (req, res) {
-    const userId = decryptText(req.query.userId);
+app.post('/post', function (req, res) {
+    const userId = decryptText(req.body.userId);
     const name = req.body.name;
     const applicationNumber = req.body.applicationNumber;
     const email = req.body.email;
@@ -51,7 +52,7 @@ app.post('/', function (req, res) {
     const keyword3 = req.body.keyword3;
     const keyword4 = req.body.keyword4;
 
-    if (req.query.userId) {
+    if (req.body.userId) {
         try {
             dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "', `email` = '" + email + "', `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
                 let toSend = {};
