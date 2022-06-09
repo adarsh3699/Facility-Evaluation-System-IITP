@@ -28,6 +28,7 @@ app.get('/', function(req, res) {
 
 app.use('/auth', require('./apis/auth'));
 app.use('/candidate', require('./apis/candidate'));
+app.use('/faculty', require('./apis/faculty'));
 
 app.use('/verifyAccount', require('./apis/verifyAccount'));
 

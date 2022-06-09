@@ -54,6 +54,7 @@ function SignUpPage() {
                     <div className="msg" >{msg}</div>
                     <Loader isLoading={isApiLoading} />
                 </form>
+                <a href="/" id='forgotPass'>Back to Login Page</a>
             </div>
         </div>
     )

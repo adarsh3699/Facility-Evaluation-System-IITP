@@ -1,8 +1,11 @@
 import Cookies from 'universal-cookie';
 const cookies = new Cookies();
 
-// const apiBaseUrl = "https://bhemu-notes.herokuapp.com/api/"
+const expiryDate = "2022-09-28T22:59:02.448804522Z";
+
+// const apiBaseUrl = ""
 const apiBaseUrl = "http://localhost:4000/";
+
 const userTypeFaculty = "c4ca4238a0b923820dcc509a6f75849b";
 const userTypeCandid = "c81e728d9d4c2f636f067f89cc14862c";
 
@@ -56,4 +59,4 @@ function validateUsername(name) {
     return re.test(name);
 }
 
-export { apiCall, getCookie, createCookie, validateUsername, userTypeFaculty, userTypeCandid };
+export { apiCall, getCookie, createCookie, validateUsername, userTypeFaculty, userTypeCandid, expiryDate };

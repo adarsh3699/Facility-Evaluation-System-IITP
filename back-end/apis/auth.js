@@ -9,7 +9,7 @@ const app = express();
 dbConnect.connect(function (error) { });
 
 function emailLoopUpTable(userType) {
-    return userType == 1 ? "facultyRegisteredEmail" : "candidateRegisteredEmail";
+    return userType == 1 ? "facultyInfo" : "candidateRegisteredEmail";
 }
 
 app.post('/register', function (req, res) {
@@ -69,11 +69,17 @@ app.post('/register', function (req, res) {
                                                     res.send(toSend);
                                                 });
                                             } else if (userType == 1) {
-                                                res.status(toSend.statusCode);
-                                                toSend.statusCode = 200;
-
-                                                toSend.msg = "Sign up successful";
-                                                res.send(toSend);
+                                                dbConnect.query("UPDATE `facultyInfo` SET `userId` = '" + insertId + "' WHERE `facultyInfo`.`email` = '" + email + "'", function (error4, results4, fields4) {
+                                                    if (error4) {
+                                                        res.status(500);
+                                                        res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
+                                                    } else {
+                                                        toSend.statusCode = 200;
+                                                        toSend.msg = "Sign up successful";
+                                                    }
+                                                    res.status(toSend.statusCode);
+                                                    res.send(toSend);
+                                                });
                                             } else {
                                                 res.status(400);
                                                 res.send({ statusCode: 400, msg: "Wrong userType" });
@@ -125,11 +131,11 @@ app.post('/login', function (req, res) {
                     } else {
                         const verifyAccount = results[0]?.isVerified;
                         if (verifyAccount === 0) {
-                            
+
                             const baseUrl = 'http://' + req.headers.host;
                             const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
                             sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
-                            
+
                             toSend.statusCode = 400;
                             toSend.msg = "Your account is not Verified please check your mail for verification";
                         } else {

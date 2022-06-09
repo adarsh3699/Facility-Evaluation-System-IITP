@@ -1,16 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { getCookie, userTypeCandid, apiCall } from "../utils";
+import { getCookie, userTypeCandid, apiCall, expiryDate } from "../utils";
 import Loader from "../components/Loader";
 
 import "../css/candidatePage.css"
 
-const expiryDate = "2022-09-28T22:59:02.448804522Z";
 const userId = getCookie("userId")
 
 function CandidatePage() {
     const [isDateExpire, setIsDateExpire] = useState(false);
     const [isSubmitApiLoading, setIsSubmitApiLoading] = useState(false);
-    const [msg, setMsg] = useState(false);
+    const [msg, setMsg] = useState("");
 
     const [name, setName] = useState("");
     const [applicationNumber, setApplicationNumber] = useState("");
@@ -24,14 +23,13 @@ function CandidatePage() {
     const [keyword3, setkeyword3] = useState("");
     const [keyword4, setkeyword4] = useState("");
 
-
     useEffect(() => {
         if (!getCookie("userId") || getCookie("userType") !== userTypeCandid) {
             document.location.href = "/";
             return;
         } else {
             (async function getData() {
-                const apiResp = await apiCall("candidate", "POST", {userId});
+                const apiResp = await apiCall("candidate", "POST", { userId });
                 if (apiResp.statusCode === 200) {
 
                     setName(apiResp?.data[0]?.name)
@@ -45,11 +43,13 @@ function CandidatePage() {
                     setkeyword2(apiResp?.data[0]?.Keyword2)
                     setkeyword3(apiResp?.data[0]?.Keyword3)
                     setkeyword4(apiResp?.data[0]?.Keyword4)
-                    const addedOn = apiResp?.data[0]?.addedOn;
+                    // const addedOn = apiResp?.data[0]?.addedOn;
 
                     // console.log("expiryDate", new Date(expiryDate).getTime());
                     // console.log("addedOn", new Date(addedOn).getTime());
-                    if (new Date(expiryDate).getTime() < new Date(addedOn).getTime()) {
+                    // console.log("Date", Date.now());
+
+                    if (Date.now() > new Date(expiryDate).getTime()) {
                         setIsDateExpire(true);
                         setMsg("The deadline for submission has expired.")
                     }
@@ -132,14 +132,21 @@ function CandidatePage() {
                 </div>
                 <div className='lableInputBox'>
                     <label>Email</label>
-                    <input type='email' value={email} readOnly={isDateExpire} onChange={handleEmailValue} />
+                    <input type='email' value={email} readOnly={true} onChange={handleEmailValue} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Department Applied for</label>
                     <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue}>
-                        <option>A</option>
-                        <option>B</option>
-                        <option>C</option>
+                        <option>CE</option>
+                        <option>CH</option>
+                        <option>CS</option>
+                        <option>EE</option>
+                        <option>HS</option>
+                        <option>MA</option>
+                        <option>MC</option>
+                        <option>ME</option>
+                        <option>MM</option>
+                        <option>PH</option>
                     </select>
                 </div>
                 <div className='lableInputBox'>
@@ -175,9 +182,9 @@ function CandidatePage() {
                     <input type='text' value={keyword4} readOnly={isDateExpire} onChange={handleKeyword4Value} />
                 </div>
                 <button id='submitBtn' className={isDateExpire ? "submitBtnLoading" : ""} >Submit</button>
-                
+
                 <div id="msg" >{msg}</div>
-                <Loader  isLoading={isSubmitApiLoading} id='loader' />
+                <Loader isLoading={isSubmitApiLoading} id='loader' />
             </form>
 
         </div>

@@ -48,7 +48,7 @@ function ForgetPasswordPage() {
         const password = e.target.password.value;
         const confPassword = e.target.confPassword.value;
 
-        if (password && confPassword) {
+        if (password === confPassword) {
             const apiResp = await apiCall("auth/change-password", "POST", { email: emailVal, password, encryptedOtp, otp });
             if (apiResp.statusCode === 200) {
                 setPassMsg(apiResp.msg)
@@ -57,7 +57,9 @@ function ForgetPasswordPage() {
                 setPassMsg(apiResp.msg)
             }
             setIsPassApiLoading(false)
-        } else { }
+        } else { 
+            setPassMsg("Password does not match")
+        }
     }
 
     return (
