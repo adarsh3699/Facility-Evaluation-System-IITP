@@ -64,9 +64,9 @@ app.post('/register', function (req, res) {
                                                     } else {
                                                         toSend.statusCode = 200;
                                                         toSend.msg = "Sign up successful";
+                                                        res.status(toSend.statusCode);
+                                                        res.send(toSend);
                                                     }
-                                                    res.status(toSend.statusCode);
-                                                    res.send(toSend);
                                                 });
                                             } else if (userType == 1) {
                                                 dbConnect.query("UPDATE `facultyInfo` SET `userId` = '" + insertId + "' WHERE `facultyInfo`.`email` = '" + email + "'", function (error4, results4, fields4) {
@@ -76,9 +76,9 @@ app.post('/register', function (req, res) {
                                                     } else {
                                                         toSend.statusCode = 200;
                                                         toSend.msg = "Sign up successful";
+                                                        res.status(toSend.statusCode);
+                                                        res.send(toSend);
                                                     }
-                                                    res.status(toSend.statusCode);
-                                                    res.send(toSend);
                                                 });
                                             } else {
                                                 res.status(400);

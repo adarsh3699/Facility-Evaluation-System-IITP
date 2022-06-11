@@ -1,0 +1,62 @@
+.table {
+    background-color: #333333;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 80px;
+    border-radius: 8px;
+}
+
+#tableTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;;
+    font-size: 150%;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+#titleName {
+    width: 30%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+#titleDepartment {
+    width: 30%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+#titleApplicationNumber {
+    width: 30%;
+    text-align: center
+}
+
+.rows {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;;
+    font-size: 150%;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.name {
+    width: 30%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+.department {
+    width: 30%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+.applicationNumber {
+    width: 30%;
+    text-align: center;
+}

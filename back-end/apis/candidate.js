@@ -8,13 +8,13 @@ const app = express();
 //mysql databse connection
 dbConnect.connect(function (error) { });
 
-//get candidate data
+//get candidate data by userId
 app.post('/', function (req, res) {
     const userId = decryptText(req.body.userId);
 
     if (req.body.userId) {
         try {
-            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4, addedOn FROM `CandidateInfo` WHERE userId = '" + userId + "'", function (error, results, fields) {
+            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE userId = '" + userId + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
@@ -34,15 +34,13 @@ app.post('/', function (req, res) {
         res.status(400);
         res.send({ statusCode: 400, msg: "Please provide all details" });
     }
-
 });
 
-//post candidate data
+//Update candidate data
 app.post('/post', function (req, res) {
     const userId = decryptText(req.body.userId);
     const name = req.body.name;
     const applicationNumber = req.body.applicationNumber;
-    const email = req.body.email;
     const department = req.body.department;
     const designation = req.body.designation;
     const titleOfTheTalk = req.body.titleOfTheTalk;
@@ -54,7 +52,7 @@ app.post('/post', function (req, res) {
 
     if (req.body.userId) {
         try {
-            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "', `email` = '" + email + "', `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
+            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "' , `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
@@ -78,7 +76,33 @@ app.post('/post', function (req, res) {
 
 });
 
+//get candidate data by userId
+app.post('/by-email', function (req, res) {
+    const email = req.body.email;
 
+    if (email) {
+        try {
+            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE email = '" + email + "'", function (error, results, fields) {
+                let toSend = {};
+                if (error) {
+                    res.status(500);
+                    res.send({ statusCode: 500, msg: "Something went wrong" });
+                } else {
+                    toSend.statusCode = 200;
+                    toSend.data = results;
+
+                    res.status(toSend.statusCode);
+                    res.send(toSend);
+                }
+            });
+        } catch (e) {
+            res.send("something went wrong");
+        }
+    } else {
+        res.status(400);
+        res.send({ statusCode: 400, msg: "Please provide all details" });
+    }
+});
 
 //exporting this file so that it can be used at other places
 module.exports = app;

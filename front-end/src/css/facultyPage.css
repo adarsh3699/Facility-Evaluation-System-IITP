@@ -1,12 +1,4 @@
-#title {
-    color: lightgray;
-    text-align: center;
-    font-size: 30px;
-    font-weight: bold;
-    letter-spacing: 1px;
-    margin-bottom: 20px;
-}
-
+/* ..................popUp............. */
 #popUpBack {
     position: fixed;
     top: 0;
@@ -15,16 +7,16 @@
     width: 100%;
     height: 100vh;
     backdrop-filter: blur(8px);
-    display: none;
+    display: flex;
     align-items: center;
     justify-content: center;
 }
 
 #confirmationPopUp {
     border-radius: 5px;
-    background-color: rgba(77, 77, 77, 0.712);
+    background-color: rgb(77, 77, 77);
     width: fit-content;
-    padding: 30px 70px;
+    padding: 30px 100px;
     box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
 }
 
@@ -56,4 +48,149 @@
 #confirmBtn:hover {
     box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
     background-color: #0277BD;
+}
+
+#popUpError {
+    color: red;
+    text-align: center;
+    margin-top: 10px;
+    font-size: 18px;
+}
+
+#socialLink { 
+    color: white;
+    margin-top: 20px;
+    width: 100%;
+    text-align: center;
+}
+
+#socialLink a {
+    color: white;
+    text-decoration: unset;
+}
+
+#socialLink a:hover {
+    text-decoration: underline;
+}
+
+/* ................................................... */
+
+#error {
+    color: red;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+#title {
+    color: lightgray;
+    text-align: center;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 20px 0;
+}
+
+#candidateInfoBox {
+    background-color: #333333;
+    width: 90%;
+    margin: auto;
+    padding: 15px 30px;
+    border-radius: 8px;
+}
+
+.candidateInfo {
+    font-size: 20px;
+    padding: 5px 0;
+}
+
+#questionBox {
+    background-color: #333333;
+    width: 90%;
+    margin: 30px auto;
+    margin-bottom: 100px;
+    padding: 15px 30px;
+}
+
+#questionBoxTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;;
+    font-size: 150%;
+    border-bottom: 1px solid #f1f1f1;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+#titleQuestios {
+    width: 70%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+#titleMarks {
+    width: 30%;
+    text-align: center;
+}
+
+.questionRow {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 150%;
+    padding: 10px 0;
+    border-bottom: 1px solid #f1f1f1;
+}
+
+.questions {
+    width: 70%;
+    border-right: 1px #f1f1f1 solid;
+}
+
+.marks {
+    width: 30%;
+    text-align: center;
+}
+
+.marksDropDown {
+    width: 50%;
+    height: 33px;
+    outline: unset;
+    font-size: 20px;
+    text-align: center;
+}
+
+#bottomOptions {
+    text-align: center;
+}
+
+#suitable {
+    margin-top: 10px;
+    padding: 10px 20px;
+    outline: unset;
+    font-size: 20px;
+    text-align: center;
+}
+
+#submitBtn {
+    background-color: rgb(170, 101, 11);
+    padding: 15px 40px;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    color: white;
+    text-decoration: unset;
+    border: unset;
+    border-radius: 5px;
+    user-select: none;
+}
+
+#msg {
+    color: red;
+    font-size: 17px;
+}
+
+#submitBtn:hover {
+    background-color: rgb(116, 64, 16);
 }

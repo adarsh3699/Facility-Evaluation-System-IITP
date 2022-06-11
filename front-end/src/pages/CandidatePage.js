@@ -68,10 +68,6 @@ function CandidatePage() {
         setApplicationNumber(e.target.value);
     }
 
-    function handleEmailValue(e) {
-        setEmail(e.target.value);
-    }
-
     function handleDepartmentValue(e) {
         setDepartment(e.target.value);
     }
@@ -107,7 +103,7 @@ function CandidatePage() {
     async function handleFormSubmit(e) {
         e.preventDefault();
         setIsSubmitApiLoading(true);
-        const apiResp = await apiCall("candidate/post", "POST", { userId, name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
+        const apiResp = await apiCall("candidate/post", "POST", { userId, name, applicationNumber, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
         if (apiResp.statusCode === 200) {
             setMsg(apiResp.msg)
         } else {
@@ -115,7 +111,6 @@ function CandidatePage() {
         }
         setIsSubmitApiLoading(false);
     }
-
 
     return (
         <div>
@@ -132,7 +127,7 @@ function CandidatePage() {
                 </div>
                 <div className='lableInputBox'>
                     <label>Email</label>
-                    <input type='email' value={email} readOnly={true} onChange={handleEmailValue} />
+                    <input type='email' value={email} readOnly={true} />
                 </div>
                 <div className='lableInputBox'>
                     <label>Department Applied for</label>

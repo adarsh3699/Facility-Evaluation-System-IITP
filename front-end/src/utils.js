@@ -3,6 +3,24 @@ const cookies = new Cookies();
 
 const expiryDate = "2022-09-28T22:59:02.448804522Z";
 
+const contactEmail = "adarsh3699@gmail.com"
+
+
+const questions = [
+    {ques: "Knowledge"},
+    {ques: "concepts"},
+    {ques: "Research Aptitude"},
+    {ques: "Innovation"},
+    {ques: "patents"},
+    {ques: "Technology transferred"},
+    {ques: "vision"},
+    {ques: "Time management"},
+    {ques: "Presentation"},
+    {ques: "communication skill"},
+    {ques: "personality"},
+    {ques: "response to questions"}
+]
+
 // const apiBaseUrl = ""
 const apiBaseUrl = "http://localhost:4000/";
 
@@ -17,7 +35,7 @@ COOKIE_EXPIRATION_TYM.setTime(COOKIE_EXPIRATION_TYM.getTime() + (COOKIE_EXPIRATI
 const COOKIE_EXPIRATION_TIME = COOKIE_EXPIRATION_TYM;
 
 async function apiCall(endpoint, method, body) {
-    const apiUrl =  apiBaseUrl + endpoint;
+    const apiUrl = apiBaseUrl + endpoint;
     try {
         let apiCallResp;
         if (method === "GET" || method === undefined) {
@@ -29,7 +47,7 @@ async function apiCall(endpoint, method, body) {
                 body: JSON.stringify(body)
             });
         }
-       
+
         const apiJsonResp = await apiCallResp.json();
         return apiJsonResp;
     } catch (error) {
@@ -43,7 +61,7 @@ function getCookie(name) {
         if (cookiesValue) {
             return cookiesValue;
         }
-    } catch {}
+    } catch { }
 
     return null;
 }
@@ -51,7 +69,7 @@ function getCookie(name) {
 function createCookie(name, value) {
     try {
         cookies.set(name, value, { path: "/", expires: COOKIE_EXPIRATION_TIME });
-    } catch {}
+    } catch { }
 }
 
 function validateUsername(name) {
@@ -59,4 +77,8 @@ function validateUsername(name) {
     return re.test(name);
 }
 
-export { apiCall, getCookie, createCookie, validateUsername, userTypeFaculty, userTypeCandid, expiryDate };
+export {
+    apiCall, getCookie, createCookie, validateUsername,
+    userTypeFaculty, userTypeCandid, expiryDate, contactEmail,
+    questions
+};
