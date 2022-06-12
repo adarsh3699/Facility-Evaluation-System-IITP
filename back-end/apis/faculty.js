@@ -1,5 +1,4 @@
 const express = require('express');
-// var mysql = require('mysql');
 const { decryptText, dbConnect } = require('../helpers');
 
 //setting express
@@ -57,11 +56,12 @@ app.post('/', function (req, res) {
                 }
             });
         } catch (e) {
-            res.send("something went wrong");
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
         }
     } else {
         res.status(400);
-        res.send({ statusCode: 400, msg: "Please UserId or valid UserId" });
+        res.send({ statusCode: 400, msg: "Please submit UserId" });
     }
 
 });
@@ -69,7 +69,6 @@ app.post('/', function (req, res) {
 
 app.post('/confirm', function (req, res) {
     const userId = decryptText(req.body.userId);
-    // const userId = req.body.userId;
 
     if (userId) {
         try {
@@ -89,11 +88,12 @@ app.post('/confirm', function (req, res) {
                 }
             });
         } catch (e) {
-            res.send("something went wrong");
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
         }
     } else {
         res.status(400);
-        res.send({ statusCode: 400, msg: "Please UserId or valid UserId" });
+        res.send({ statusCode: 400, msg: "Please submit UserId" });
     }
 
 });
@@ -102,52 +102,47 @@ app.post('/confirm', function (req, res) {
 app.post('/submit-marks', function (req, res) {
     const candEmail = req.body.candEmail;
     const facEmail = req.body.facEmail;
-    const ques1 = req.body.ques1;
-    const ques2 = req.body.ques2;
-    const ques3 = req.body.ques3;
-    const ques4 = req.body.ques4;
-    const ques5 = req.body.ques5;
-    const ques6 = req.body.ques6;
-    const ques7 = req.body.ques7;
-    const ques8 = req.body.ques8;
-    const ques9 = req.body.ques9;
-    const ques10 = req.body.ques10;
-    const ques11 = req.body.ques11;
-    const ques12 = req.body.ques12;
+    const qstnsMarks = req.body.qstnsMarks;
     const suitable = req.body.suitable;
 
-
-    if (candEmail && facEmail) {
+    if (candEmail && facEmail && qstnsMarks && suitable) {
         try {
-
-
             dbConnect.query("SELECT * FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
                     res.send({ statusCode: 500, msg: "Something went wrong" });
-                    console.log(error);
                 } else {
 
-                    if (results = "") {
-                        res.status(toSend.statusCode);
-                        res.send(toSend);
-                        dbConnect.query("INSERT INTO `questionMarks` (`candEmail`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) VALUES ('" + candEmail + "', '" + facEmail + "', '" + ques1 + "', '" + ques2 + "', '" + ques3 + "', '" + ques4 + "', '" + ques5 + "', '" + ques6 + "', '" + ques7 + "', '" + ques8 + "', '" + ques9 + "', '" + ques10 + "', '" + ques11 + "', '" + ques12 + "', '" + suitable + "')", function (error2, results2, fields2) {
-                            let toSend = {};
-                            if (error) {
+                    if (results == "") {
+                        let qstnsMarksQuery = '';
+                        for (let i = 0; i < qstnsMarks.length; i++) {
+                            const thisQstnMark = (qstnsMarks[i]).trim();
+                            if (!thisQstnMark) {
+                                res.status(400);
+                                res.send({ statusCode: 400, msg: "Please submit marks for all questions" });
+                                return;
+                            }
+                            qstnsMarksQuery += (thisQstnMark + "', '");
+                        }
+                        dbConnect.query(
+                            "INSERT INTO questionMarks \
+                            (`candEmail`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
+                            VALUES ('" + candEmail + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')", 
+                            function (error2, results2, fields2) {
+                            if (error2) {
                                 res.status(500);
                                 res.send({ statusCode: 500, msg: "Something went wrong" });
-                                console.log(error);
                             } else {
                                 toSend.statusCode = 200;
-                                toSend.msg = "Submit Successfully"
+                                toSend.msg = "Marks submitted successfully"
 
                                 res.status(toSend.statusCode);
                                 res.send(toSend);
                             }
                         });
                     } else {
-                        toSend.statusCode = 200;
+                        toSend.statusCode = 400;
                         toSend.msg = "You can only Submit once"
                         res.status(toSend.statusCode);
                         res.send(toSend);
@@ -155,11 +150,12 @@ app.post('/submit-marks', function (req, res) {
                 }
             });
         } catch (e) {
-            res.send("something went wrong");
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
         }
     } else {
         res.status(400);
-        res.send({ statusCode: 400, msg: "Please UserId or valid UserId" });
+        res.send({ statusCode: 400, msg: "Please submit all fields" });
     }
 
 });

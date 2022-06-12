@@ -1,6 +1,6 @@
 import "../css/table.css"
 
-function Table({ candidatesData, cellClick }) {
+function Table({ candidatesData, onTableRowClick }) {
     return (
         <div className='table'>
             <div id='tableTitle'>
@@ -10,7 +10,7 @@ function Table({ candidatesData, cellClick }) {
             </div>
             {
                 candidatesData.map((item, index) => (
-                    <div className='rows' key={index} onClick={() => cellClick(item.email)}>
+                    <div className='rows' key={index} onClick={() => onTableRowClick(item.email, item.questionMarksId)}>
                         <div className='name'>{item.name}</div>
                         <div className='department'>{item.department}</div>
                         <div className='applicationNumber'>{item.applicationNumber}</div>

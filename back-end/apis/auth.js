@@ -1,5 +1,4 @@
 const express = require('express');
-var url = require('url')
 const { sendMail, md5Hash, encryptText, decryptText, dbConnect } = require('../helpers');
 
 //setting express

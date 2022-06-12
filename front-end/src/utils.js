@@ -3,10 +3,9 @@ const cookies = new Cookies();
 
 const expiryDate = "2022-09-28T22:59:02.448804522Z";
 
-const contactEmail = "adarsh3699@gmail.com"
+const CONTACT_EMAIL = "adarsh3699@gmail.com"
 
-
-const questions = [
+const QUESTIONS = [
     {ques: "Knowledge"},
     {ques: "concepts"},
     {ques: "Research Aptitude"},
@@ -19,6 +18,19 @@ const questions = [
     {ques: "communication skill"},
     {ques: "personality"},
     {ques: "response to questions"}
+];
+const QUESTION_OPTIONS = [1,2,3,4,5,6,7,8,9,10];
+const CANDIDATE_INFO = [
+    { title: "Name", key: "name" },
+    { title: "ApplicationNumber", key: "applicationNumber" },
+    { title: "Email", key: "email" },
+    { title: "Department", key: "department" },
+    { title: "Designation", key: "designation" },
+    { title: "Broad Area of Research Topic", key: "researchTopic"},
+    { title: "Keyword1", key: "Keyword1" },
+    { title: "Keyword2", key: "Keyword2" },
+    { title: "Keyword3", key: "Keyword3" },
+    { title: "Keyword4", key: "Keyword4" },
 ]
 
 // const apiBaseUrl = ""
@@ -79,6 +91,6 @@ function validateUsername(name) {
 
 export {
     apiCall, getCookie, createCookie, validateUsername,
-    userTypeFaculty, userTypeCandid, expiryDate, contactEmail,
-    questions
+    userTypeFaculty, userTypeCandid, expiryDate,
+    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO
 };

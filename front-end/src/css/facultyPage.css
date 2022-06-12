@@ -3,7 +3,7 @@
     position: fixed;
     top: 0;
     left: 0;
-    z-index: 2;
+    z-index: 10;
     width: 100%;
     height: 100vh;
     backdrop-filter: blur(8px);
@@ -73,6 +73,33 @@
     text-decoration: underline;
 }
 
+
+#rUSureBtns {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+#yesBtn {
+    background-color: green;    
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#noBtn {
+    background-color: orange;    
+    padding: 10px 25px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#yesBtn:hover {
+    background-color: darkgreen;
+}
+#noBtn:hover {
+    background-color: darkgoldenrod;
+}
 /* ................................................... */
 
 #error {
@@ -89,7 +116,7 @@
     font-size: 30px;
     font-weight: bold;
     letter-spacing: 1px;
-    padding: 20px 0;
+    padding: 30px 0 20px 0;
 }
 
 #candidateInfoBox {
@@ -175,7 +202,7 @@
 }
 
 #submitBtn {
-    background-color: rgb(170, 101, 11);
+    background-color: rgb(202, 121, 14);
     padding: 15px 40px;
     margin-top: 20px;
     margin-bottom: 10px;
@@ -186,11 +213,19 @@
     user-select: none;
 }
 
-#msg {
-    color: red;
-    font-size: 17px;
-}
-
 #submitBtn:hover {
     background-color: rgb(116, 64, 16);
 }
+
+.submitBtnDisable {
+    background-color: rgb(116, 64, 16) !important;
+    pointer-events: none;
+}
+
+
+#msg {
+    color: red;
+    text-align: center;
+    font-size: 17px;
+}
+

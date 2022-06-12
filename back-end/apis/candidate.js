@@ -1,5 +1,4 @@
 const express = require('express');
-// var mysql = require('mysql');
 const { decryptText, dbConnect } = require('../helpers');
 
 //setting express
@@ -28,6 +27,7 @@ app.post('/', function (req, res) {
                 }
             });
         } catch (e) {
+            res.status(500);
             res.send("something went wrong");
         }
     } else {
@@ -67,7 +67,8 @@ app.post('/post', function (req, res) {
                 }
             });
         } catch (e) {
-            res.send("something went wrong");
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
         }
     } else {
         res.status(400);
@@ -78,25 +79,38 @@ app.post('/post', function (req, res) {
 
 //get candidate data by userId
 app.post('/by-email', function (req, res) {
-    const email = req.body.email;
+    const candEmail = req.body.candEmail;
+    const facEmail = req.body.facEmail;
 
-    if (email) {
+    if (candEmail && facEmail) {
         try {
-            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE email = '" + email + "'", function (error, results, fields) {
+            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE email = '" + candEmail + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
                     res.send({ statusCode: 500, msg: "Something went wrong" });
                 } else {
-                    toSend.statusCode = 200;
-                    toSend.data = results;
 
-                    res.status(toSend.statusCode);
-                    res.send(toSend);
+                    dbConnect.query("SELECT q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, suitable FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error2, results2, fields2) {
+                        let toSend = {};
+                        if (error2) {
+                            res.status(500);
+                            res.send({ statusCode: 500, msg: "Something went wrong" });
+                        } else {
+                            toSend.statusCode = 200;
+                            toSend.data = {
+                                candDetails: results[0] || {},
+                                candMarks: results2[0] || {},
+                            };
+                            res.status(toSend.statusCode);
+                            res.send(toSend);
+                        }
+                    });
                 }
             });
         } catch (e) {
-            res.send("something went wrong");
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
         }
     } else {
         res.status(400);

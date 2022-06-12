@@ -1,5 +1,4 @@
 const express = require('express');
-var mysql = require('mysql');
 const { decryptText, dbConnect } = require('../helpers');
 
 //setting express
@@ -36,6 +35,7 @@ app.get('/', function (req, res) {
             res.send("<center><h1>Invalid url</h1></center>")
         }
     } catch (e) {
+        res.status(500);
         res.send("<center><h1>Something went wrong</h1></center>");
     }
 });

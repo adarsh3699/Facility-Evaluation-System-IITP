@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from 'react';
-import { getCookie, userTypeFaculty, apiCall, contactEmail, questions } from "../utils";
+import {
+    getCookie, userTypeFaculty, apiCall,
+    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO
+} from "../utils";
 import Modal from "../components/Modal";
-import Table from "../components/Table"
-import Loader from "../components/Loader"
+import Table from "../components/Table";
+import Loader from "../components/Loader";
+import DialogBox from "../components/DialogBox";
 
 import "../css/facultyPage.css"
 
@@ -10,16 +14,19 @@ const userId = getCookie("userId")
 
 function FacultyPage() {
 
+    const [isYesNoModalOpen, setIsYesNoModalOpen] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
+    const [totalQstnMarks, setTotalQstnMarks] = useState(0);
+    const [quesMarks, setQuesMarks] = useState({});
+    const [alreadySubmit, setAlreadySubmit] = useState(false);
+    const [isSuitable, setisSuitable] = useState("");
 
     const [error, setError] = useState("");
     const [msg, setMsg] = useState("");
-    const [isGetApiLoading, setIsGetApiLoading] = useState(false);
     const [isApiLoading, setIsApiLoading] = useState(false);
 
-
     const [facultyDetails, setFacultyDetails] = useState({});
-    const [candidateDetails, setCandidateDetails] = useState({});
+    const [selectedCandidateDetails, setSelectedCandidateDetails] = useState({});
     const [notMarksGivenCandidates, setNotMarksGivenCandidates] = useState([]);
     const [marksGivenCandidates, setMarksGivenCandidates] = useState([]);
 
@@ -28,24 +35,21 @@ function FacultyPage() {
             document.location.href = "/";
             return;
         } else {
-            setIsGetApiLoading(true);
+            setIsApiLoading(true);
             (async function getData() {
                 const apiResp = await apiCall("faculty", "post", { userId });
                 if (apiResp.statusCode === 200) {
                     const { facDetails = {}, candDetails = [] } = apiResp?.data || {};
                     setFacultyDetails(facDetails);
 
-                    setMarksGivenCandidates(candDetails.filter((item) => {
-                        return item.questionMarksId ? true : false;
-                    }));
-                    setNotMarksGivenCandidates(candDetails.filter((item) => {
-                        return item.questionMarksId ? false : true;
-                    }));
+                    setMarksGivenCandidates(candDetails.filter(item => (item.questionMarksId ? true : false)));
+                    setNotMarksGivenCandidates(candDetails.filter(item => (item.questionMarksId ? false : true)));
                     // setNotMarksGivenCandidates(candDetails.filter((item) => (item.questionMarksId ? false : true)));
+                    // const key = "name"; facultyDetails[key];
                 } else {
                     setError(apiResp.msg);
                 }
-                setIsGetApiLoading(false);
+                setIsApiLoading(false);
             })();
         }
     }, []);
@@ -62,44 +66,70 @@ function FacultyPage() {
         }
     }
 
-    async function cellClick(email) {
+    async function handleTableRowClick(email, questionMarksId) {
         setIsModalOpen(true);
-        setCandidateDetails([])
+        setSelectedCandidateDetails({});
+        setQuesMarks({});
+        setTotalQstnMarks(0);
+        setisSuitable("")
+        setAlreadySubmit(false)
+        setMsg("");
 
-        const apiResp = await apiCall("candidate/by-email", "post", { email });
+        if (questionMarksId) {
+            setAlreadySubmit(true)
+            setMsg("You can Only Submit Once");
+        }
+
+        console.log(questionMarksId);
+        const apiResp = await apiCall("candidate/by-email", "post", { candEmail: email, facEmail: facultyDetails.email });
         if (apiResp.statusCode === 200) {
-            setCandidateDetails(apiResp.data[0])
+            setSelectedCandidateDetails(apiResp?.data?.candDetails)
+            setQuesMarks(apiResp?.data?.candMarks)
+
+            if (questionMarksId, apiResp?.data?.candMarks.q1 && apiResp?.data?.candMarks.q12) {
+                let total = 0;
+                for (let i = 1; i <= 12; i++) {
+                    total += apiResp?.data?.candMarks?.["q" + i]
+                }
+                setTotalQstnMarks(total)
+                setisSuitable(apiResp?.data?.candMarks.suitable)
+            }
+
         } else {
             setError(apiResp.msg)
         }
     }
 
-    function handleModalClose() {
-        setIsModalOpen(false);
+    function handleQuesMarksChange() {
+        let total = 0;
+
+        for (let i = 1; i <= QUESTIONS.length; i++) {
+            total += +(document?.getElementsByName("ques" + i)?.[0]?.value);
+        }
+        setTotalQstnMarks(total);
+
     }
 
-    async function handleQuesMarksSubmit(e) {
-        e.preventDefault()
-        const ques1 = e.target.ques1.value;
-        const ques2 = e.target.ques2.value;
-        const ques3 = e.target.ques3.value;
-        const ques4 = e.target.ques4.value;
-        const ques5 = e.target.ques5.value;
-        const ques6 = e.target.ques6.value;
-        const ques7 = e.target.ques7.value;
-        const ques8 = e.target.ques8.value;
-        const ques9 = e.target.ques9.value;
-        const ques10 = e.target.ques10.value;
-        const ques11 = e.target.ques11.value;
-        const ques12 = e.target.ques12.value;
-        const suitable = e.target.suitable.value;
+    function handleMarksSubmitBtn(e) {
+        e.preventDefault();
+        setIsYesNoModalOpen(true)
+    }
 
-        if (ques1 && ques2 && ques3 && ques4 && ques5 && ques6 && ques7 && ques8 && ques9 && ques10 && ques11 && ques12 && suitable) {
-            setIsApiLoading(true)
+    async function handleYesBtnClick() {
+        const qstnsMarks = [];
+        for (let i = 1; i <= QUESTIONS.length; i++) {
+            qstnsMarks.push(document?.getElementsByName("ques" + i)?.[0]?.value);
+        }
+        const suitable = document?.getElementById("suitable")?.value;
+
+        setIsYesNoModalOpen(false);
+        if (qstnsMarks.length === 12 && suitable) {
+            setIsApiLoading(true);
             const apiResp = await apiCall("faculty/submit-marks", "post", {
-                candEmail: candidateDetails.email, facEmail: facultyDetails.email,
-                ques1, ques2, ques3, ques4, ques5, ques6, ques7, ques8,
-                ques9, ques10, ques11, ques12, suitable
+                candEmail: selectedCandidateDetails.email,
+                facEmail: facultyDetails.email,
+                qstnsMarks,
+                suitable
             });
 
             if (apiResp.statusCode === 200) {
@@ -111,17 +141,16 @@ function FacultyPage() {
         } else {
             setMsg("Please fill the whole data")
         }
-
     }
+
 
     return (
         <div>
 
             {
                 facultyDetails.isVerified === 0 ?
-                    <div id='popUpBack' >
-                        <div id='confirmationPopUp'>
-                            <div id='title'>Confirm Your Details</div>
+                    <DialogBox title="Confirm Your Details" >
+                        <>
                             <div className='details'><span>Name :- </span>{facultyDetails.name}</div>
                             <div className='details'><span>Email :- </span>{facultyDetails.email}</div>
                             <div className='details'><span>Department :- </span>{facultyDetails.department}</div>
@@ -130,53 +159,37 @@ function FacultyPage() {
                             <div id='socialLink'>
                                 If your Details is not correct contact here
                                 <br />
-                                <a href={"mailto:" + contactEmail} target="_blank" >
-                                    {contactEmail}
-                                </a>
+                                <a href={"mailto:" + CONTACT_EMAIL} target="_blank">{CONTACT_EMAIL}</a>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    </DialogBox>
                     : null
             }
 
             <div id="error">{error}</div>
-            <Loader
-                isLoading={isGetApiLoading}
-            />
+            <Loader isLoading={isApiLoading} />
 
             <div id='title'>Marks Not Given</div>
-            <Table
-                candidatesData={notMarksGivenCandidates}
-                cellClick={cellClick}
-            />
-
-
-
+            <Table candidatesData={notMarksGivenCandidates} onTableRowClick={handleTableRowClick} />
 
             <div id='title'>Marks Given</div>
-            <Table
-                candidatesData={marksGivenCandidates}
-                cellClick={cellClick}
-            />
+            <Table candidatesData={marksGivenCandidates} onTableRowClick={handleTableRowClick} />
 
             <Modal
                 open={isModalOpen}
                 closeOnOutsideClick={false}
-                handleModalClose={handleModalClose}
+                handleModalClose={() => setIsModalOpen(false)}
             >
                 <div id='backgroundDiv'>
                     <div id='title'>Candidate Details</div>
                     <div id='candidateInfoBox'>
-                        <div className='candidateInfo'><b>Name :- </b>{candidateDetails.name}</div>
-                        <div className='candidateInfo'><b>ApplicationNumber :- </b>{candidateDetails.applicationNumber}</div>
-                        <div className='candidateInfo'><b>Email :- </b>{candidateDetails.email}</div>
-                        <div className='candidateInfo'><b>Department :- </b>{candidateDetails.department}</div>
-                        <div className='candidateInfo'><b>Designation :- </b>{candidateDetails.designation}</div>
-                        <div className='candidateInfo'><b>Broad Area of Research Topic :- </b>{candidateDetails.researchTopic}</div>
-                        <div className='candidateInfo'><b>Keyword1 :- </b>{candidateDetails.Keyword1}</div>
-                        <div className='candidateInfo'><b>Keyword2 :- </b>{candidateDetails.Keyword2}</div>
-                        <div className='candidateInfo'><b>Keyword3 :- </b>{candidateDetails.Keyword3}</div>
-                        <div className='candidateInfo'><b>Keyword4 :- </b>{candidateDetails.Keyword4}</div>
+                        {
+                            CANDIDATE_INFO.map(item => (
+                                <div key={item.key} className='candidateInfo'>
+                                    <b>{item.title} :- </b> {selectedCandidateDetails[item.key]}
+                                </div>
+                            ))
+                        }
                     </div>
 
                     <div id='questionBox'>
@@ -184,45 +197,65 @@ function FacultyPage() {
                             <div id="titleQuestios">Questios</div>
                             <div id="titleMarks">Marks</div>
                         </div>
-                        <form onSubmit={handleQuesMarksSubmit}>
+                        <form onSubmit={handleMarksSubmitBtn}>
                             {
-                                questions.map((item, index) => (
+                                QUESTIONS.map((item, index) => (
                                     <div key={index}>
                                         <div className="questionRow">
                                             <div className='questions'>{"Q" + (index + 1) + ") "}{item.ques}</div>
                                             <div className='marks'>
-                                                <select name={"ques" + (index + 1)} required className='marksDropDown'>
-                                                    <option value="">0</option>
-                                                    <option>1</option>
-                                                    <option>2</option>
-                                                    <option>3</option>
-                                                    <option>4</option>
-                                                    <option>5</option>
-                                                    <option>6</option>
-                                                    <option>7</option>
-                                                    <option>8</option>
-                                                    <option>9</option>
-                                                    <option>10</option>
-                                                </select>
+                                                {
+                                                    alreadySubmit ?
+                                                        quesMarks["q" + (index + 1)]
+                                                        :
+                                                        <select
+                                                            required
+                                                            name={"ques" + (index + 1)}
+                                                            onChange={handleQuesMarksChange}
+                                                            className='marksDropDown'
+                                                        >
+                                                            <option value="">0</option>
+                                                            {QUESTION_OPTIONS.map(item => (<option key={item} value={item}>{item}</option>))}
+                                                        </select>
+                                                }
+
                                             </div>
                                         </div>
                                     </div>
                                 ))
                             }
+
+                            <div>
+                                <div className="questionRow">
+                                    <div className='questions'><b>Total :- </b></div>
+                                    <div className='marks'><b>{totalQstnMarks}</b></div>
+                                </div>
+                            </div>
+
                             <div id='bottomOptions'>
-                                <select id='suitable' name='suitable' required>
+                                <select id='suitable' name='suitable' value={alreadySubmit ? isSuitable: null} onChange={() => { }} required>
                                     <option value="">Suitable</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
                                 </select> <br />
-                                <button id='submitBtn'>Submit</button>
-                                <div id='msg'>{msg}</div>
-                                <Loader
-                                    isLoading={isApiLoading}
-                                />
+                                <button id='submitBtn' className={alreadySubmit ? "submitBtnDisable" : ""}>Submit</button>
                             </div>
+                            <div id='msg'>{msg}</div>
+                            <Loader isLoading={isApiLoading} />
                         </form>
                     </div>
+
+                    {
+                        isYesNoModalOpen ?
+                            <DialogBox title="Are You Sure?" >
+                                <div id='rUSureBtns'>
+                                    <div id='noBtn' onClick={() => setIsYesNoModalOpen(false)}>No</div>
+                                    <div id='yesBtn' onClick={handleYesBtnClick}>Yes</div>
+                                </div>
+                            </DialogBox>
+                            :
+                            null
+                    }
                 </div>
             </Modal>
         </div>
