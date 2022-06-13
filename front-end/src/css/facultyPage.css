@@ -17,7 +17,7 @@
     background-color: rgb(77, 77, 77);
     width: fit-content;
     padding: 30px 100px;
-    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.5);
 }
 
 .details {
@@ -41,12 +41,12 @@
 
 .confirmBtnIsloading {
     background-color: #0277BD !important;
-    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.5);
     pointer-events: none;
-} 
+}
 
 #confirmBtn:hover {
-    box-shadow: 0px 2px 5px 1px rgba(0,0,0,0.5);
+    box-shadow: 0px 2px 5px 1px rgba(0, 0, 0, 0.5);
     background-color: #0277BD;
 }
 
@@ -57,7 +57,7 @@
     font-size: 18px;
 }
 
-#socialLink { 
+#socialLink {
     color: white;
     margin-top: 20px;
     width: 100%;
@@ -81,14 +81,14 @@
 }
 
 #yesBtn {
-    background-color: green;    
+    background-color: green;
     padding: 10px 25px;
     border-radius: 5px;
     cursor: pointer;
 }
 
 #noBtn {
-    background-color: orange;    
+    background-color: orange;
     padding: 10px 25px;
     border-radius: 5px;
     cursor: pointer;
@@ -97,9 +97,11 @@
 #yesBtn:hover {
     background-color: darkgreen;
 }
+
 #noBtn:hover {
     background-color: darkgoldenrod;
 }
+
 /* ................................................... */
 
 #error {
@@ -144,7 +146,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;;
+    color: white;
+    ;
     font-size: 150%;
     border-bottom: 1px solid #f1f1f1;
     padding: 10px 0;
@@ -229,3 +232,22 @@
     font-size: 17px;
 }
 
+#logOut {
+    color: white;
+    position: absolute;
+    width: 100%;
+    text-align: center;
+    font-size: 20px;
+    bottom: 5px;
+    /* background-color: rebeccapurple; */
+    margin: auto;
+}
+
+#logOut span {
+    padding: 3px;
+    cursor: pointer;
+}
+
+#logOut span:hover {
+    text-decoration: underline;
+}

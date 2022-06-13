@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { getCookie, userTypeCandid, apiCall, expiryDate } from "../utils";
+import { getCookie, createCookie, userTypeCandid, apiCall, expiryDate } from "../utils";
 import Loader from "../components/Loader";
 
 import "../css/candidatePage.css"
@@ -112,6 +112,12 @@ function CandidatePage() {
         setIsSubmitApiLoading(false);
     }
 
+    function handleLogoutBtnClick() {
+        createCookie("userId", "");
+        createCookie("userType", "");
+        document.location.href = "/";
+    }
+
     return (
         <div>
             <div id='title'>Candidate Page</div>
@@ -181,7 +187,7 @@ function CandidatePage() {
                 <div id="msg" >{msg}</div>
                 <Loader isLoading={isSubmitApiLoading} id='loader' />
             </form>
-
+            <div id='logOut'><span onClick={handleLogoutBtnClick}>Log Out</span></div>
         </div>
     );
 }

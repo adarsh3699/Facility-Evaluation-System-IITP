@@ -1,0 +1,87 @@
+phase 1: SIGNUP + FORGOT PASS candidate also do forgot pass 
+phase1
+
+<register on website>
+
+Name of the Applicant: <stud input>
+Application Number: <stud input>
+Email: <signup wala> AUTO FILLED
+Department Applied for: <Drop Down> A,B,C
+Designation Applied for: <Drop Down> Asst Prof, Asso Prof, Prof
+Title of the talk: <stud input> TEXT BOX
+Broad Area of Research Topic: 1 input
+Keyword 1 of research area : <stud input> TEXT BOX
+Keyword 2 of research area : <stud input> TEXT BOX
+Keyword 3 of research area : <stud input> TEXT BOX
+Keyword 4 of research area : <stud input> TEXT BOX
+
+
+
+
+phase 2: SIGNUP only for faculty + FORGOT PASS candidate  <check email in db> also do forgot pass 
+SIGNUP ONLY FOR FAC
+
+here are your details:
+ADARSH SUMAN, adarsh@iitp.ac.in,CS <non editable>
+
+
+
+
+
+CS
+Application: 35
+CS Dept Faculty: 12
+
+MAYANK AGARWAL, mayank@iitp.ac.in,CS
+ADARSH SUMAN, adarsh@iitp.ac.in,CS
+FAC_NAME, FAC_EMAIL, DEPT <SINGLE TABLE>
+
+Total 12*35
+
+CONSOLIDATED REPORT:
+
+
+
+PDF FILE
+APPLICANT 1:
+Name of the Applicant: <stud input>
+Application Number: <stud input>
+Email: <signup wala> AUTO FILLED
+Department Applied for: <Drop Down> A,B,C
+Designation Applied for: <Drop Down> Asst Prof, Asso Prof, Prof
+Title of the talk: <stud input> TEXT BOX
+Broad Area of Research Topic: 1 input
+Keyword 1 of research area : <stud input> TEXT BOX
+Keyword 2 of research area : <stud input> TEXT BOX
+Keyword 3 of research area : <stud input> TEXT BOX
+Keyword 4 of research area : <stud input> TEXT BOX
+
+<sort by fac name>
+FAC1 EVAL: Fac_name, <TOTAL SCORE> , Suitable: Yes/No
+FAC2 EVAL: Fac_name, <TOTAL SCORE> , Suitable: Yes/No
+FAC3 EVAL: Fac_name, <TOTAL SCORE> , Suitable: Yes/No
+..
+FAC11 EVAL: Fac_name, <not provided> , Suitable: <not provided>
+FAC12 EVAL: Fac_name, <TOTAL SCORE> , Suitable: Yes/No
+
+Total Dept Fac: 12
+Total Marked Suitable:
+Total Marked UnSuitable:
+No Response:
+
+GRID 
+
+ME
+Application: 48
+CS Dept Faculty: 15
+Total 15*48
+
+RAM AGARWAL, RAM@iitp.ac.in,ME
+ADITYA SUMAN, aditya@iitp.ac.in,ME
+
+
+
+EE
+Application: 60
+CS Dept Faculty: 10
+Total 60*100

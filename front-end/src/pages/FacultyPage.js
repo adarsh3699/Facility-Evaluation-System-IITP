@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
-    getCookie, userTypeFaculty, apiCall,
+    getCookie, createCookie, userTypeFaculty, apiCall,
     CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO
 } from "../utils";
 import Modal from "../components/Modal";
@@ -86,7 +86,7 @@ function FacultyPage() {
             setSelectedCandidateDetails(apiResp?.data?.candDetails)
             setQuesMarks(apiResp?.data?.candMarks)
 
-            if (questionMarksId, apiResp?.data?.candMarks.q1 && apiResp?.data?.candMarks.q12) {
+            if (questionMarksId && apiResp?.data?.candMarks.q1 && apiResp?.data?.candMarks.q12) {
                 let total = 0;
                 for (let i = 1; i <= 12; i++) {
                     total += apiResp?.data?.candMarks?.["q" + i]
@@ -143,6 +143,11 @@ function FacultyPage() {
         }
     }
 
+    function handleLogoutBtnClick() {
+        createCookie("userId", "");
+        createCookie("userType", "");
+        document.location.href = "/";
+    }
 
     return (
         <div>
@@ -233,7 +238,7 @@ function FacultyPage() {
                             </div>
 
                             <div id='bottomOptions'>
-                                <select id='suitable' name='suitable' value={alreadySubmit ? isSuitable: null} onChange={() => { }} required>
+                                <select id='suitable' name='suitable' value={alreadySubmit ? isSuitable : null} onChange={() => { }} required>
                                     <option value="">Suitable</option>
                                     <option value="1">Yes</option>
                                     <option value="0">No</option>
@@ -258,6 +263,7 @@ function FacultyPage() {
                     }
                 </div>
             </Modal>
+            <div id='logOut'><span onClick={handleLogoutBtnClick}>Log Out</span></div>
         </div>
     );
 }
