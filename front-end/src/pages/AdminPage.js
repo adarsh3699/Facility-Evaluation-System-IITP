@@ -39,7 +39,7 @@ function AdminPage() {
     function handleLeftArrowBtnClick() {
         if (isDepartmentVisible == false) {
             setIsDepartmentVisible(true)
-        }
+        } 
     }
 
     function handleRightArrowBtnClick() {
