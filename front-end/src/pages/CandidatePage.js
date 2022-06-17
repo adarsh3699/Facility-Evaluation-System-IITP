@@ -1,5 +1,8 @@
 import React, { useState, useEffect } from 'react';
-import { getCookie, createCookie, userTypeCandid, apiCall, expiryDate } from "../utils";
+import {
+    getCookie, createCookie, userTypeCandid, apiCall,
+    expiryDate, DEPARTMENT
+} from "../utils";
 import Loader from "../components/Loader";
 
 import "../css/candidatePage.css"
@@ -138,16 +141,11 @@ function CandidatePage() {
                 <div className='lableInputBox'>
                     <label>Department Applied for</label>
                     <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue}>
-                        <option>CE</option>
-                        <option>CH</option>
-                        <option>CS</option>
-                        <option>EE</option>
-                        <option>HS</option>
-                        <option>MA</option>
-                        <option>MC</option>
-                        <option>ME</option>
-                        <option>MM</option>
-                        <option>PH</option>
+                        {
+                            DEPARTMENT.map((item, index) => (
+                                <option key={index}>{item}</option>
+                            ))
+                        }
                     </select>
                 </div>
                 <div className='lableInputBox'>

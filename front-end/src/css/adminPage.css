@@ -1,0 +1,52 @@
+#title {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+    color: lightgray;
+    font-size: 30px;
+    font-weight: bold;
+    letter-spacing: 1px;
+    padding: 30px 0 20px 0;
+}
+
+.arrowBtn {
+    font-size: 45px;
+    background-color: rgba(0, 0, 0, 0.274);
+    border-radius: 100%;
+    padding-bottom: 5px;
+    padding: 0 5px 5px 5px;
+    user-select: none;
+    cursor: pointer;
+}
+
+.arrowBtn:hover {
+    background-color: rgba(0, 0, 0, 06);
+}
+
+.table {
+    background-color: #333333;
+    width: 90%;
+    margin: auto;
+    margin-bottom: 80px;
+    border-radius: 8px;
+}
+
+#tableTitle {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;;
+    font-size: 150%;
+    padding: 10px 0;
+    font-weight: bold;
+}
+
+.rows {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: white;;
+    font-size: 150%;
+    padding: 10px 0;
+    border-top: 1px solid #f1f1f1;
+}

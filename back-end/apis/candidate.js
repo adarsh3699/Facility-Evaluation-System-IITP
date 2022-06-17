@@ -77,7 +77,7 @@ app.post('/post', function (req, res) {
 
 });
 
-//get candidate data by userId
+//get candidate data by Email
 app.post('/by-email', function (req, res) {
     const candEmail = req.body.candEmail;
     const facEmail = req.body.facEmail;
@@ -106,6 +106,34 @@ app.post('/by-email', function (req, res) {
                             res.send(toSend);
                         }
                     });
+                }
+            });
+        } catch (e) {
+            res.status(500);
+            res.send({ statusCode: 500, msg: "Something went wrong" });
+        }
+    } else {
+        res.status(400);
+        res.send({ statusCode: 400, msg: "Please provide all details" });
+    }
+});
+
+//get candidate data by Email
+app.get('/by-department', function (req, res) {
+    const department = req.query.department;
+
+    if (department) {
+        try {
+            dbConnect.query("SELECT name, applicationNumber, email, department FROM `CandidateInfo` WHERE department = '" + department + "'", function (error, results, fields) {
+                let toSend = {};
+                if (error) {
+                    res.status(500);
+                    res.send({ statusCode: 500, msg: "Something went wrong" });
+                } else {
+                    toSend.statusCode = 200;
+                    toSend.data = results;
+                    res.status(toSend.statusCode);
+                    res.send(toSend);
                 }
             });
         } catch (e) {

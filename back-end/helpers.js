@@ -8,7 +8,7 @@ const dbConnect = mysql.createConnection({
     host: "localhost",
     user: "root",
     password: "",
-    database: 'sir-project'
+    database: 'faculty-recruit-iitp'
 });
 
 const encryptionKey = "bhemu_is_kutta";

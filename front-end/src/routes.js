@@ -6,6 +6,7 @@ const SignUpPage = lazy(() => import('./pages/SignUpPage'));
 const ForgetPasswordPage = lazy(() => import('./pages/ForgetPasswordPage'));
 const FacultyPage = lazy(() => import('./pages/FacultyPage'));
 const CandidatePage = lazy(() => import('./pages/CandidatePage'));
+const AdminPage = lazy(() => import('./pages/AdminPage'));
 
 function Routes() {
     return (
@@ -26,6 +27,7 @@ function Routes() {
                     <Route exact path="/forget-password" element={<ForgetPasswordPage />} />
                     <Route exact path="/faculty-page" element={<FacultyPage />} />
                     <Route exact path="/candidate-page" element={<CandidatePage />} />
+                    <Route exact path="/admin-page" element={<AdminPage />} />
 
                     <Route path="*" element={<center><h1>Page Not Found</h1></center>} />
                 </Switch>

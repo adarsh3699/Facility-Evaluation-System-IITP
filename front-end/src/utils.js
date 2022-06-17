@@ -19,7 +19,10 @@ const QUESTIONS = [
     {ques: "personality"},
     {ques: "response to questions"}
 ];
+
+const DEPARTMENT = ["CE", "CH", "CS", "EE", "HS", "MA", "MC", "ME", "MM", "PH"]
 const QUESTION_OPTIONS = [1,2,3,4,5,6,7,8,9,10];
+
 const CANDIDATE_INFO = [
     { title: "Name", key: "name" },
     { title: "ApplicationNumber", key: "applicationNumber" },
@@ -38,6 +41,7 @@ const apiBaseUrl = "http://localhost:4000/";
 
 const userTypeFaculty = "c4ca4238a0b923820dcc509a6f75849b";
 const userTypeCandid = "c81e728d9d4c2f636f067f89cc14862c";
+const userTypeAdmin = "eccbc87e4b5ce2fe28308fd9f2a7baf3";
 
 // variables for setting cookie expiratiom tym
 const COOKIE_EXPIRATION_MINS = 30 * 24 * 60; // 30 days
@@ -91,6 +95,6 @@ function validateUsername(name) {
 
 export {
     apiCall, getCookie, createCookie, validateUsername,
-    userTypeFaculty, userTypeCandid, expiryDate,
-    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO
+    userTypeFaculty, userTypeCandid, userTypeAdmin, expiryDate,
+    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO, DEPARTMENT
 };

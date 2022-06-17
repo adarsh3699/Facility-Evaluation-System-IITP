@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiCall, getCookie, createCookie, userTypeFaculty, userTypeCandid } from "../utils";
+import { apiCall, getCookie, createCookie, userTypeFaculty, userTypeCandid, userTypeAdmin } from "../utils";
 import Loader from "../components/Loader";
 
 import "../css/loginPage.css";
@@ -15,6 +15,8 @@ function LoginPage() {
                 document.location.href = "/faculty-page";
             } else if (getCookie("userType") === userTypeCandid) {
                 document.location.href = "/candidate-page";
+            } else if (getCookie("userType") === userTypeAdmin) {
+                document.location.href = "/admin-page";
             }
             return;
         }
@@ -38,11 +40,13 @@ function LoginPage() {
                 if (userId && userTypeEncr) {
                     createCookie("userId", userId);
                     createCookie("userType", userTypeEncr);
-                    console.log(userTypeEncr === userTypeCandid)
+                    
                     if (userTypeEncr === userTypeFaculty) {
                         document.location.href = "/faculty-page";
                     } else if (userTypeEncr === userTypeCandid) {
                         document.location.href = "/candidate-page";
+                    } else if (userTypeEncr === userTypeAdmin) {
+                        document.location.href = "/admin-page";
                     }
                 } else {
                     setMsg("Something went wrong")
@@ -70,6 +74,7 @@ function LoginPage() {
                     <select id='userType' name="userType">
                         <option value="1">Faculty</option>
                         <option value="2">Candidate</option>
+                        <option value="3">Admin</option>
                     </select>
                     <br /><br />
 
