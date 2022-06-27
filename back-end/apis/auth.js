@@ -11,6 +11,7 @@ function emailLoopUpTable(userType) {
     return userType == 1 ? "facultyInfo" : "candidateRegisteredEmail";
 }
 
+//signUp
 app.post('/register', function (req, res) {
     const email = req.body.email;
     const password = md5Hash(req.body.password);
@@ -31,63 +32,87 @@ app.post('/register', function (req, res) {
                 } else {
                     toSend.statusCode = 200;
                     if (results == "") {
-                        const query2 = "SELECT email FROM " + emailLoopUpTable(userType) + " WHERE email = '" + email + "'";
-                        dbConnect.query(query2, function (error2, results2, fields2) {
-                            if (error2) {
-                                res.status(500);
-                                res.send({ statusCode: 500, msg: error2?.sqlMessage || "query failed" });
-                            } else {
-                                if (results2 == "") {
-                                    toSend.statusCode = 400;
-                                    toSend.msg = "Your Email is not registered in Our DataBase";
-                                    res.status(toSend.statusCode);
-                                    res.send(toSend);
+                        try {
+                            const query2 = "SELECT email FROM " + emailLoopUpTable(userType) + " WHERE email = '" + email + "'";
+                            dbConnect.query(query2, function (error2, results2, fields2) {
+                                if (error2) {
+                                    res.status(500);
+                                    res.send({ statusCode: 500, msg: error2?.sqlMessage || "query failed" });
                                 } else {
+                                    if (results2 == "") {
+                                        toSend.statusCode = 400;
+                                        toSend.msg = "Your Email is not registered in Our DataBase";
+                                        res.status(toSend.statusCode);
+                                        res.send(toSend);
+                                    } else {
+                                        try {
+                                            dbConnect.query("INSERT INTO `users` (`email`, `password`, `userType`) VALUES ('" + email + "', '" + password + "', '" + userType + "')", function (error3, results3, fields3) {
+                                                if (error3) {
+                                                    res.status(500);
+                                                    res.send({ statusCode: 500, msg: error3?.sqlMessage || "query failed" });
+                                                } else {
+                                                    const baseUrl = 'http://' + req.headers.host;
+                                                    const encodedEmail = Buffer.from(encryptText(email)).toString('base64')
+                                                    const emailValidationLink = baseUrl + "/verifyAccount?ka=" + encodedEmail;
+                                                    sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
 
-                                    dbConnect.query("INSERT INTO `users` (`email`, `password`, `userType`) VALUES ('" + email + "', '" + password + "', '" + userType + "')", function (error3, results3, fields3) {
-                                        if (error3) {
+                                                    const insertId = results3.insertId;
+
+                                                    if (userType == 2) {
+                                                        try {
+                                                            dbConnect.query("INSERT INTO `CandidateInfo` (`userId`, `email`) VALUES ('" + insertId + "', '" + email + "')", function (error4, results4, fields4) {
+                                                                if (error4) {
+                                                                    res.status(500);
+                                                                    res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
+                                                                } else {
+                                                                    toSend.statusCode = 200;
+                                                                    toSend.msg = "Sign up successful";
+                                                                    res.status(toSend.statusCode);
+                                                                    res.send(toSend);
+                                                                }
+                                                            });
+                                                        } catch (err) {
+                                                            res.status(500);
+                                                            res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
+                                                        }
+
+                                                    } else if (userType == 1) {
+                                                        try {
+                                                            dbConnect.query("UPDATE `facultyInfo` SET `userId` = '" + insertId + "' WHERE `facultyInfo`.`email` = '" + email + "'", function (error4, results4, fields4) {
+                                                                if (error4) {
+                                                                    res.status(500);
+                                                                    res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
+                                                                } else {
+                                                                    toSend.statusCode = 200;
+                                                                    toSend.msg = "Sign up successful";
+                                                                    res.status(toSend.statusCode);
+                                                                    res.send(toSend);
+                                                                }
+                                                            });
+                                                        } catch (err) {
+                                                            res.status(500);
+                                                            res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
+                                                        }
+
+                                                    } else {
+                                                        res.status(400);
+                                                        res.send({ statusCode: 400, msg: "Wrong userType" });
+                                                    }
+                                                }
+                                            });
+                                        } catch (err) {
                                             res.status(500);
-                                            res.send({ statusCode: 500, msg: error3?.sqlMessage || "query failed" });
-                                        } else {
-                                            const baseUrl = 'http://' + req.headers.host;
-                                            const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
-                                            sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
-
-                                            const insertId = results3.insertId;
-
-                                            if (userType == 2) {
-                                                dbConnect.query("INSERT INTO `CandidateInfo` (`userId`, `name`, `applicationNumber`, `email`, `department`, `designation`, `titleOfTheTalk`, `researchTopic`, `Keyword1`, `Keyword2`, `Keyword3`, `Keyword4`) VALUES ('" + insertId + "', '', '', '" + email + "', '', '', '', '', '', '', '', '')", function (error4, results4, fields4) {
-                                                    if (error4) {
-                                                        res.status(500);
-                                                        res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
-                                                    } else {
-                                                        toSend.statusCode = 200;
-                                                        toSend.msg = "Sign up successful";
-                                                        res.status(toSend.statusCode);
-                                                        res.send(toSend);
-                                                    }
-                                                });
-                                            } else if (userType == 1) {
-                                                dbConnect.query("UPDATE `facultyInfo` SET `userId` = '" + insertId + "' WHERE `facultyInfo`.`email` = '" + email + "'", function (error4, results4, fields4) {
-                                                    if (error4) {
-                                                        res.status(500);
-                                                        res.send({ statusCode: 500, msg: error4?.sqlMessage || "query failed" });
-                                                    } else {
-                                                        toSend.statusCode = 200;
-                                                        toSend.msg = "Sign up successful";
-                                                        res.status(toSend.statusCode);
-                                                        res.send(toSend);
-                                                    }
-                                                });
-                                            } else {
-                                                res.status(400);
-                                                res.send({ statusCode: 400, msg: "Wrong userType" });
-                                            }
+                                            res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
                                         }
-                                    });
+
+                                    }
                                 }
-                            }
-                        });
+                            });
+                        } catch (err) {
+                            res.status(500);
+                            res.send({ statusCode: 500, msg: "Something went wrong", error: err.message });
+                        }
+
                     } else {
                         toSend.statusCode = 400;
                         toSend.msg = "Account already exists";
@@ -106,6 +131,7 @@ app.post('/register', function (req, res) {
     }
 });
 
+//login
 app.post('/login', function (req, res) {
     const email = req.body.email;
     const password = md5Hash(req.body.password);
@@ -132,7 +158,9 @@ app.post('/login', function (req, res) {
                         if (verifyAccount === 0) {
 
                             const baseUrl = 'http://' + req.headers.host;
-                            const emailValidationLink = baseUrl + "/verifyAccount?ka=" + btoa(encryptText(email));
+                            const encodedEmail = Buffer.from(encryptText(email)).toString('base64')
+                            const emailValidationLink = baseUrl + "/verifyAccount?ka=" + encodedEmail
+
                             sendMail(email, "Email Verfication", "Verify your email at", emailValidationLink);
 
                             toSend.statusCode = 400;

@@ -17,6 +17,8 @@ function CandidatePage() {
     const [name, setName] = useState("");
     const [applicationNumber, setApplicationNumber] = useState("");
     const [email, setEmail] = useState("");
+    const [phoneNo, setPhoneNo] = useState("");
+    const [whatsappNo, setWhatsappNo] = useState("");
     const [department, setDepartment] = useState("");
     const [designation, setDesignation] = useState("");
     const [titleOfTheTalk, setTitleOfTheTalk] = useState("");
@@ -36,8 +38,10 @@ function CandidatePage() {
                 if (apiResp.statusCode === 200) {
 
                     setName(apiResp?.data[0]?.name)
-                    setApplicationNumber(apiResp?.data[0]?.applicationNumber)
+                    setApplicationNumber(apiResp?.data[0]?.applicationNumber || "")
                     setEmail(apiResp?.data[0]?.email)
+                    setPhoneNo(apiResp?.data[0]?.phoneNo || "")
+                    setWhatsappNo(apiResp?.data[0]?.whatsappNo || "")
                     setDepartment(apiResp?.data[0]?.department)
                     setDesignation(apiResp?.data[0]?.designation)
                     setTitleOfTheTalk(apiResp?.data[0]?.titleOfTheTalk)
@@ -69,6 +73,14 @@ function CandidatePage() {
 
     function handleApplicationNumberValue(e) {
         setApplicationNumber(e.target.value);
+    }
+
+    function handlePhoneNoValue(e) {
+        setPhoneNo(e.target.value);
+    }
+
+    function handleWhatsappNoValue(e) {
+        setWhatsappNo(e.target.value);
     }
 
     function handleDepartmentValue(e) {
@@ -106,7 +118,7 @@ function CandidatePage() {
     async function handleFormSubmit(e) {
         e.preventDefault();
         setIsSubmitApiLoading(true);
-        const apiResp = await apiCall("candidate/post", "POST", { userId, name, applicationNumber, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
+        const apiResp = await apiCall("candidate/post", "POST", { userId, name, phoneNo, whatsappNo, applicationNumber, department, designation, titleOfTheTalk, researchTopic, keyword1, keyword2, keyword3, keyword4 });
         if (apiResp.statusCode === 200) {
             setMsg(apiResp.msg)
         } else {
@@ -127,17 +139,29 @@ function CandidatePage() {
             <form id='CandidatePageForm' onSubmit={handleFormSubmit}>
                 <div className='lableInputBox'>
                     <label>Name of the Applicant</label>
-                    <input type='text' value={name} readOnly={isDateExpire} onChange={handleNameValue} />
+                    <input type='text' value={name} readOnly={isDateExpire} onChange={handleNameValue} placeholder="Full Name" />
                 </div>
 
                 <div className='lableInputBox'>
                     <label>Application Number</label>
-                    <input type='number' value={applicationNumber} readOnly={isDateExpire} onChange={handleApplicationNumberValue} />
+                    <input type='number' value={applicationNumber} readOnly={isDateExpire} onChange={handleApplicationNumberValue} placeholder="Application Number" />
                 </div>
+
                 <div className='lableInputBox'>
                     <label>Email</label>
-                    <input type='email' value={email} readOnly={true} />
+                    <input type='email' value={email} onChange={() => { }} readOnly={true} />
                 </div>
+
+                <div className='lableInputBox'>
+                    <label>Phone Number</label>
+                    <input type='number' value={phoneNo} onChange={handlePhoneNoValue} readOnly={isDateExpire} placeholder="Phone No. (with country code)" />
+                </div>
+
+                <div className='lableInputBox'>
+                    <label>WhatsApp Number</label>
+                    <input type='number' value={whatsappNo} onChange={handleWhatsappNoValue} readOnly={isDateExpire} placeholder="WhatsApp No. (with country code)" />
+                </div>
+
                 <div className='lableInputBox'>
                     <label>Department Applied for</label>
                     <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue}>
@@ -148,37 +172,38 @@ function CandidatePage() {
                         }
                     </select>
                 </div>
+
                 <div className='lableInputBox'>
                     <label>Designation Applied for</label>
                     <select value={designation} disabled={isDateExpire} onChange={handleDesignationValue}>
                         <option>Assistant</option>
                         <option>Professor</option>
-                        <option>Asso</option>
+                        <option>Associate</option>
                     </select>
                 </div>
                 <div className='lableInputBox'>
                     <label>Title of the Talk</label>
-                    <input type='text' value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue} />
+                    <input type='text' value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue} placeholder="Title of the Talk" />
                 </div>
                 <div className='lableInputBox'>
                     <label>Broad Area of Research Topic</label>
-                    <input type='text' value={researchTopic} readOnly={isDateExpire} onChange={handleResearchTopicValue} />
+                    <input type='text' value={researchTopic} readOnly={isDateExpire} onChange={handleResearchTopicValue} placeholder="Broad Area of Research Topic" />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 1 of research area</label>
-                    <input type='text' value={keyword1} readOnly={isDateExpire} onChange={handleKeyword1Value} />
+                    <input type='text' value={keyword1} readOnly={isDateExpire} onChange={handleKeyword1Value} placeholder="Keyword 1" />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 2 of research area</label>
-                    <input type='text' value={keyword2} readOnly={isDateExpire} onChange={handleKeyword2Value} />
+                    <input type='text' value={keyword2} readOnly={isDateExpire} onChange={handleKeyword2Value} placeholder="Keyword 2" />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 3 of research area</label>
-                    <input type='text' value={keyword3} readOnly={isDateExpire} onChange={handleKeyword3Value} />
+                    <input type='text' value={keyword3} readOnly={isDateExpire} onChange={handleKeyword3Value} placeholder="Keyword 3" />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 4 of research area</label>
-                    <input type='text' value={keyword4} readOnly={isDateExpire} onChange={handleKeyword4Value} />
+                    <input type='text' value={keyword4} readOnly={isDateExpire} onChange={handleKeyword4Value} placeholder="Keyword 4" />
                 </div>
                 <button id='submitBtn' className={isDateExpire ? "submitBtnLoading" : ""} >Submit</button>
 

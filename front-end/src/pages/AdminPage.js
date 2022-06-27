@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiCall, getCookie, DEPARTMENT, userTypeAdmin } from "../utils";
+import { apiCall, getCookie, createCookie, DEPARTMENT, userTypeAdmin } from "../utils";
 import Loader from "../components/Loader";
 import Modal from "../components/Modal";
 import Table from "../components/Table";
@@ -21,6 +21,12 @@ function AdminPage() {
             return;
         }
     }, []);
+
+    function handleLogoutBtnClick() {
+        createCookie("userId", "");
+        createCookie("userType", "");
+        document.location.href = "/";
+    }
 
     async function handleDepartmentClick(department) {
         if (department) {
@@ -93,7 +99,7 @@ function AdminPage() {
                     <div id='title'>Candidate Details</div>
                 </div>
             </Modal>
-
+            <div id='logOut'><span onClick={handleLogoutBtnClick}>Log Out</span></div>
         </div>
     );
 }

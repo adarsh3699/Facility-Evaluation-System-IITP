@@ -13,7 +13,7 @@ app.post('/', function (req, res) {
 
     if (req.body.userId) {
         try {
-            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE userId = '" + userId + "'", function (error, results, fields) {
+            dbConnect.query("SELECT name, applicationNumber, email, phoneNo, whatsappNo, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE userId = '" + userId + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
@@ -41,6 +41,8 @@ app.post('/post', function (req, res) {
     const userId = decryptText(req.body.userId);
     const name = req.body.name;
     const applicationNumber = req.body.applicationNumber;
+    const phoneNo = req.body.phoneNo;
+    const whatsappNo = req.body.whatsappNo;
     const department = req.body.department;
     const designation = req.body.designation;
     const titleOfTheTalk = req.body.titleOfTheTalk;
@@ -52,11 +54,12 @@ app.post('/post', function (req, res) {
 
     if (req.body.userId) {
         try {
-            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "' , `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
+            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "' , `phoneNo` = '" + phoneNo + "', `whatsappNo` = '" + whatsappNo + "',  `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
                     res.send({ statusCode: 500, msg: "Something went wrong" });
+                    console.log(error);
                 } else {
                     toSend.statusCode = 200;
                     toSend.msg = "Submit Successfully"
@@ -90,22 +93,27 @@ app.post('/by-email', function (req, res) {
                     res.status(500);
                     res.send({ statusCode: 500, msg: "Something went wrong" });
                 } else {
+                    try {
+                        dbConnect.query("SELECT q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, suitable FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error2, results2, fields2) {
+                            let toSend = {};
+                            if (error2) {
+                                res.status(500);
+                                res.send({ statusCode: 500, msg: "Something went wrong" });
+                            } else {
+                                toSend.statusCode = 200;
+                                toSend.data = {
+                                    candDetails: results[0] || {},
+                                    candMarks: results2[0] || {},
+                                };
+                                res.status(toSend.statusCode);
+                                res.send(toSend);
+                            }
+                        });
+                    } catch (err) {
+                        res.status(500);
+                        res.send({ statusCode: 500, msg: "Something went wrong" });
+                    }
 
-                    dbConnect.query("SELECT q1, q2, q3, q4, q5, q6, q7, q8, q9, q10, q11, q12, suitable FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error2, results2, fields2) {
-                        let toSend = {};
-                        if (error2) {
-                            res.status(500);
-                            res.send({ statusCode: 500, msg: "Something went wrong" });
-                        } else {
-                            toSend.statusCode = 200;
-                            toSend.data = {
-                                candDetails: results[0] || {},
-                                candMarks: results2[0] || {},
-                            };
-                            res.status(toSend.statusCode);
-                            res.send(toSend);
-                        }
-                    });
                 }
             });
         } catch (e) {

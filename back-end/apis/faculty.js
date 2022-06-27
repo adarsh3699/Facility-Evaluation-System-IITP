@@ -66,7 +66,6 @@ app.post('/', function (req, res) {
 
 });
 
-
 app.post('/confirm', function (req, res) {
     const userId = decryptText(req.body.userId);
 
@@ -115,32 +114,38 @@ app.post('/submit-marks', function (req, res) {
                 } else {
 
                     if (results == "") {
-                        let qstnsMarksQuery = '';
-                        for (let i = 0; i < qstnsMarks.length; i++) {
-                            const thisQstnMark = (qstnsMarks[i]).trim();
-                            if (!thisQstnMark) {
-                                res.status(400);
-                                res.send({ statusCode: 400, msg: "Please submit marks for all questions" });
-                                return;
+                        try {
+                            let qstnsMarksQuery = '';
+                            for (let i = 0; i < qstnsMarks.length; i++) {
+                                const thisQstnMark = (qstnsMarks[i]).trim();
+                                if (!thisQstnMark) {
+                                    res.status(400);
+                                    res.send({ statusCode: 400, msg: "Please submit marks for all questions" });
+                                    return;
+                                }
+                                qstnsMarksQuery += (thisQstnMark + "', '");
                             }
-                            qstnsMarksQuery += (thisQstnMark + "', '");
-                        }
-                        dbConnect.query(
-                            "INSERT INTO questionMarks \
-                            (`candEmail`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
-                            VALUES ('" + candEmail + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')", 
-                            function (error2, results2, fields2) {
-                            if (error2) {
-                                res.status(500);
-                                res.send({ statusCode: 500, msg: "Something went wrong" });
-                            } else {
-                                toSend.statusCode = 200;
-                                toSend.msg = "Marks submitted successfully"
+                            dbConnect.query(
+                                "INSERT INTO questionMarks \
+                                (`candEmail`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
+                                VALUES ('" + candEmail + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')",
+                                function (error2, results2, fields2) {
+                                    if (error2) {
+                                        res.status(500);
+                                        res.send({ statusCode: 500, msg: "Something went wrong" });
+                                    } else {
+                                        toSend.statusCode = 200;
+                                        toSend.msg = "Marks submitted successfully"
 
-                                res.status(toSend.statusCode);
-                                res.send(toSend);
-                            }
-                        });
+                                        res.status(toSend.statusCode);
+                                        res.send(toSend);
+                                    }
+                                });
+                        } catch (err) {
+                            res.status(500);
+                            res.send({ statusCode: 500, msg: "Something went wrong" });
+                        }
+
                     } else {
                         toSend.statusCode = 400;
                         toSend.msg = "You can only Submit once"
