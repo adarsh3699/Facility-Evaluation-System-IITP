@@ -27,6 +27,8 @@ const CANDIDATE_INFO = [
     { title: "Name", key: "name" },
     { title: "ApplicationNumber", key: "applicationNumber" },
     { title: "Email", key: "email" },
+    { title: "Phone No.", key: "phoneNo" },
+    { title: "WhatsApp No.", key: "whatsappNo" },
     { title: "Department", key: "department" },
     { title: "Designation", key: "designation" },
     { title: "Broad Area of Research Topic", key: "researchTopic"},

@@ -49,7 +49,7 @@ textarea {
 }
 
 #submitBtn{
-    background-color: rgb(170, 101, 11);
+    background-color: rgb(229, 133, 8);
     margin: auto;
     padding: 10px 30px;
     color: white;
@@ -61,11 +61,11 @@ textarea {
 }
 
 #submitBtn:hover {
-    background-color: rgb(116, 64, 16);
+    background-color: rgb(164, 88, 18);
 }
 
 .submitBtnLoading {
-    background-color: rgb(116, 64, 16) !important;
+    background-color: rgb(164, 88, 18) !important;
     pointer-events: none;
 }
 

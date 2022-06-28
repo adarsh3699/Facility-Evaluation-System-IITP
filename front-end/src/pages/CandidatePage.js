@@ -138,13 +138,13 @@ function CandidatePage() {
             <div id='title'>Candidate Page</div>
             <form id='CandidatePageForm' onSubmit={handleFormSubmit}>
                 <div className='lableInputBox'>
-                    <label>Name of the Applicant</label>
-                    <input type='text' value={name} readOnly={isDateExpire} onChange={handleNameValue} placeholder="Full Name" />
+                    <label>Name of the Applicant *</label>
+                    <input type='text' value={name} readOnly={isDateExpire} onChange={handleNameValue} placeholder="Full Name" required />
                 </div>
 
                 <div className='lableInputBox'>
-                    <label>Application Number</label>
-                    <input type='number' value={applicationNumber} readOnly={isDateExpire} onChange={handleApplicationNumberValue} placeholder="Application Number" />
+                    <label>Application Number *</label>
+                    <input type='number' value={applicationNumber} readOnly={isDateExpire} onChange={handleApplicationNumberValue} placeholder="Application Number" required />
                 </div>
 
                 <div className='lableInputBox'>
@@ -153,18 +153,18 @@ function CandidatePage() {
                 </div>
 
                 <div className='lableInputBox'>
-                    <label>Phone Number</label>
-                    <input type='number' value={phoneNo} onChange={handlePhoneNoValue} readOnly={isDateExpire} placeholder="Phone No. (with country code)" />
+                    <label>Phone Number *</label>
+                    <input type='number' value={phoneNo} onChange={handlePhoneNoValue} readOnly={isDateExpire} placeholder="Phone No. (with country code)" required />
                 </div>
 
                 <div className='lableInputBox'>
-                    <label>WhatsApp Number</label>
-                    <input type='number' value={whatsappNo} onChange={handleWhatsappNoValue} readOnly={isDateExpire} placeholder="WhatsApp No. (with country code)" />
+                    <label>WhatsApp Number *</label>
+                    <input type='number' value={whatsappNo} onChange={handleWhatsappNoValue} readOnly={isDateExpire} placeholder="WhatsApp No. (with country code)" required />
                 </div>
 
                 <div className='lableInputBox'>
-                    <label>Department Applied for</label>
-                    <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue}>
+                    <label>Department Applied For *</label>
+                    <select value={department} disabled={isDateExpire} onChange={handleDepartmentValue} required>
                         {
                             DEPARTMENT.map((item, index) => (
                                 <option key={index}>{item}</option>
@@ -174,20 +174,20 @@ function CandidatePage() {
                 </div>
 
                 <div className='lableInputBox'>
-                    <label>Designation Applied for</label>
-                    <select value={designation} disabled={isDateExpire} onChange={handleDesignationValue}>
+                    <label>Designation Applied For *</label>
+                    <select value={designation} disabled={isDateExpire} onChange={handleDesignationValue} required>
                         <option>Assistant</option>
                         <option>Professor</option>
                         <option>Associate</option>
                     </select>
                 </div>
                 <div className='lableInputBox'>
-                    <label>Title of the Talk</label>
-                    <input type='text' value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue} placeholder="Title of the Talk" />
+                    <label>Title of the Talk *</label>
+                    <input type='text' value={titleOfTheTalk} readOnly={isDateExpire} onChange={handleTitleOfTheTalkValue} placeholder="Title of the Talk" required />
                 </div>
                 <div className='lableInputBox'>
-                    <label>Broad Area of Research Topic</label>
-                    <input type='text' value={researchTopic} readOnly={isDateExpire} onChange={handleResearchTopicValue} placeholder="Broad Area of Research Topic" />
+                    <label>Broad Area of Research Topic *</label>
+                    <input type='text' value={researchTopic} readOnly={isDateExpire} onChange={handleResearchTopicValue} placeholder="Broad Area of Research Topic" required />
                 </div>
                 <div className='lableInputBox'>
                     <label>Keyword 1 of research area</label>

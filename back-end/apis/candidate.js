@@ -52,9 +52,16 @@ app.post('/post', function (req, res) {
     const keyword3 = req.body.keyword3;
     const keyword4 = req.body.keyword4;
 
+    let phoneNum;
+    let whatsAppNum;
+
+    whatsappNo ? whatsAppNum = "'" + whatsappNo + "'" : whatsAppNum = "NULL"
+    phoneNo ? phoneNum = "'" + phoneNo + "'" : phoneNum = "NULL"
+
     if (req.body.userId) {
         try {
-            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "' , `phoneNo` = '" + phoneNo + "', `whatsappNo` = '" + whatsappNo + "',  `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
+            let phoneNumber;
+            dbConnect.query("UPDATE `CandidateInfo` SET `name` = '" + name + "', `applicationNumber` = '" + applicationNumber + "' , `phoneNo` = " + phoneNum + ", `whatsappNo` =" + whatsAppNum + ",  `department` = '" + department + "', `designation` = '" + designation + "', `titleOfTheTalk` = '" + titleOfTheTalk + "', `researchTopic` = '" + researchTopic + "', `keyword1` = '" + keyword1 + "', `keyword2` = '" + keyword2 + "', `keyword3` = '" + keyword3 + "', `keyword4` = '" + keyword4 + "' WHERE `CandidateInfo`.`userId` =" + userId, function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
@@ -87,7 +94,7 @@ app.post('/by-email', function (req, res) {
 
     if (candEmail && facEmail) {
         try {
-            dbConnect.query("SELECT name, applicationNumber, email, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE email = '" + candEmail + "'", function (error, results, fields) {
+            dbConnect.query("SELECT name, applicationNumber, email, phoneNo, whatsappNo, department, designation, titleOfTheTalk, researchTopic, Keyword1, Keyword2, Keyword3, Keyword4 FROM `CandidateInfo` WHERE email = '" + candEmail + "'", function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);
@@ -126,7 +133,7 @@ app.post('/by-email', function (req, res) {
     }
 });
 
-//get candidate data by Email
+//get candidate data by department
 app.get('/by-department', function (req, res) {
     const department = req.query.department;
 

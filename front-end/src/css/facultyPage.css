@@ -214,6 +214,7 @@
     border: unset;
     border-radius: 5px;
     user-select: none;
+    cursor: pointer;
 }
 
 #submitBtn:hover {
@@ -230,6 +231,17 @@
     color: red;
     text-align: center;
     font-size: 17px;
+}
+
+#backToHome {
+    margin-top: 10px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+#backToHome:hover {
+    text-decoration: underline;
 }
 
 #logOut {

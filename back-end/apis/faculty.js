@@ -100,6 +100,7 @@ app.post('/confirm', function (req, res) {
 //marks submit
 app.post('/submit-marks', function (req, res) {
     const candEmail = req.body.candEmail;
+    const facName = req.body.facName;
     const facEmail = req.body.facEmail;
     const qstnsMarks = req.body.qstnsMarks;
     const suitable = req.body.suitable;
@@ -127,8 +128,8 @@ app.post('/submit-marks', function (req, res) {
                             }
                             dbConnect.query(
                                 "INSERT INTO questionMarks \
-                                (`candEmail`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
-                                VALUES ('" + candEmail + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')",
+                                (`candEmail`, `facName`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
+                                VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')",
                                 function (error2, results2, fields2) {
                                     if (error2) {
                                         res.status(500);

@@ -127,6 +127,7 @@ function FacultyPage() {
             setIsApiLoading(true);
             const apiResp = await apiCall("faculty/submit-marks", "post", {
                 candEmail: selectedCandidateDetails.email,
+                facName: facultyDetails.name,
                 facEmail: facultyDetails.email,
                 qstnsMarks,
                 suitable
@@ -245,9 +246,10 @@ function FacultyPage() {
                                 </select> <br />
                                 <button id='submitBtn' className={alreadySubmit ? "submitBtnDisable" : ""}>Submit</button>
                             </div>
-                            <div id='msg'>{msg}</div>
-                            <Loader isLoading={isApiLoading} />
                         </form>
+                        <div id='msg'>{msg}</div>
+                        <Loader isLoading={isApiLoading} />
+                        <div id='backToHome' onClick={() => setIsModalOpen(false)}>Back To Home</div>
                     </div>
 
                     {

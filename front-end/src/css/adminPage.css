@@ -1,7 +1,5 @@
 #title {
-    display: flex;
-    align-items: center;
-    justify-content: space-around;
+    text-align: center;
     color: lightgray;
     font-size: 30px;
     font-weight: bold;
@@ -35,20 +33,54 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;;
+    color: white;
+    ;
     font-size: 150%;
     padding: 10px 0;
     font-weight: bold;
+}
+
+#titleDepartment {
+    width: 30%;
+    text-align: center;
+    border-right: 1px #f1f1f1 solid;
+}
+
+#titleDownload {
+    width: 70%;
+    text-align: center;
 }
 
 .rows {
     display: flex;
     align-items: center;
     justify-content: center;
-    color: white;;
+    color: white;
+    ;
     font-size: 150%;
     padding: 10px 0;
     border-top: 1px solid #f1f1f1;
+}
+
+.department {
+    width: 30%;
+    border-right: 1px #f1f1f1 solid;
+    text-align: center;
+}
+
+.summarySheet {
+    width: 35%;
+    border-right: 1px #f1f1f1 solid;
+    text-align: center;
+    color: rgb(247, 146, 22);
+    cursor: pointer;
+}
+
+.detailSheet {
+    width: 35%;
+    text-align: center;
+    color: lightgreen;
+    cursor: pointer;
 }
 
 #logOut {
