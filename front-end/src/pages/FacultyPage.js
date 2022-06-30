@@ -19,6 +19,7 @@ function FacultyPage() {
     const [totalQstnMarks, setTotalQstnMarks] = useState(0);
     const [quesMarks, setQuesMarks] = useState({});
     const [alreadySubmit, setAlreadySubmit] = useState(false);
+    const [isPresent, setisPresent] = useState(true);
     const [isSuitable, setisSuitable] = useState("");
 
     const [error, setError] = useState("");
@@ -80,7 +81,6 @@ function FacultyPage() {
             setMsg("You can Only Submit Once");
         }
 
-        console.log(questionMarksId);
         const apiResp = await apiCall("candidate/by-email", "post", { candEmail: email, facEmail: facultyDetails.email });
         if (apiResp.statusCode === 200) {
             setSelectedCandidateDetails(apiResp?.data?.candDetails)
@@ -93,6 +93,12 @@ function FacultyPage() {
                 }
                 setTotalQstnMarks(total)
                 setisSuitable(apiResp?.data?.candMarks.suitable)
+
+                if (apiResp?.data?.candMarks.absentOrPresent === "Present") {
+                    setisPresent(true)
+                } else if (apiResp?.data?.candMarks.absentOrPresent === "Absent") {
+                    setisPresent(false)
+                }
             }
 
         } else {
@@ -110,6 +116,15 @@ function FacultyPage() {
 
     }
 
+    function handleAbsentOrPresentDropDown(e) {
+        console.log(e.target.value);
+        if (e.target.value === "Absent") {
+            setisPresent(false)
+        } else if (e.target.value === "Present") {
+            setisPresent(true)
+        }
+    }
+
     function handleMarksSubmitBtn(e) {
         e.preventDefault();
         setIsYesNoModalOpen(true)
@@ -121,27 +136,24 @@ function FacultyPage() {
             qstnsMarks.push(document?.getElementsByName("ques" + i)?.[0]?.value);
         }
         const suitable = document?.getElementById("suitable")?.value;
-
         setIsYesNoModalOpen(false);
-        if (qstnsMarks.length === 12 && suitable) {
-            setIsApiLoading(true);
-            const apiResp = await apiCall("faculty/submit-marks", "post", {
-                candEmail: selectedCandidateDetails.email,
-                facName: facultyDetails.name,
-                facEmail: facultyDetails.email,
-                qstnsMarks,
-                suitable
-            });
 
-            if (apiResp.statusCode === 200) {
-                setMsg(apiResp.msg)
-            } else {
-                setMsg(apiResp.msg)
-            }
-            setIsApiLoading(false)
+        setIsApiLoading(true);
+        const apiResp = await apiCall("faculty/submit-marks", "post", {
+            candEmail: selectedCandidateDetails.email,
+            facName: facultyDetails.name,
+            facEmail: facultyDetails.email,
+            qstnsMarks,
+            suitable,
+            absentOrPresent: (isPresent ? "Present" : "Absent")
+        });
+
+        if (apiResp.statusCode === 200) {
+            setMsg(apiResp.msg)
         } else {
-            setMsg("Please fill the whole data")
+            setMsg(apiResp.msg)
         }
+        setIsApiLoading(false)
     }
 
     function handleLogoutBtnClick() {
@@ -215,7 +227,7 @@ function FacultyPage() {
                                                         quesMarks["q" + (index + 1)]
                                                         :
                                                         <select
-                                                            required
+                                                            required={isPresent}
                                                             name={"ques" + (index + 1)}
                                                             onChange={handleQuesMarksChange}
                                                             className='marksDropDown'
@@ -239,12 +251,17 @@ function FacultyPage() {
                             </div>
 
                             <div id='bottomOptions'>
-                                <select id='suitable' name='suitable' value={alreadySubmit ? isSuitable : null} onChange={() => { }} required>
+                                <select id='present' value={alreadySubmit ? (isPresent ? "Present" : "Absent") : undefined} onChange={handleAbsentOrPresentDropDown} required>
+                                    <option value="">Is Present</option>
+                                    <option value="Present">Present</option>
+                                    <option value="Absent">Absent</option>
+                                </select>
+                                <select id='suitable' name='suitable' value={alreadySubmit ? isSuitable : undefined} onChange={() => { }} required={isPresent}>
                                     <option value="">Suitable</option>
-                                    <option value="1">Yes</option>
-                                    <option value="0">No</option>
+                                    <option value="Yes">Yes</option>
+                                    <option value="No">No</option>
                                 </select> <br />
-                                <button id='submitBtn' className={alreadySubmit ? "submitBtnDisable" : ""}>Submit</button>
+                                <button id='submitBtn' className={alreadySubmit ? "submitBtnDisable" : undefined}>Submit</button>
                             </div>
                         </form>
                         <div id='msg'>{msg}</div>

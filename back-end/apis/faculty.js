@@ -104,8 +104,10 @@ app.post('/submit-marks', function (req, res) {
     const facEmail = req.body.facEmail;
     const qstnsMarks = req.body.qstnsMarks;
     const suitable = req.body.suitable;
+    const absentOrPresent = req.body.absentOrPresent;
 
-    if (candEmail && facEmail && qstnsMarks && suitable) {
+console.log(candEmail , facEmail , absentOrPresent);
+    if (candEmail && facEmail && absentOrPresent) {
         try {
             dbConnect.query("SELECT * FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error, results, fields) {
                 let toSend = {};
@@ -116,32 +118,42 @@ app.post('/submit-marks', function (req, res) {
 
                     if (results == "") {
                         try {
-                            let qstnsMarksQuery = '';
-                            for (let i = 0; i < qstnsMarks.length; i++) {
-                                const thisQstnMark = (qstnsMarks[i]).trim();
-                                if (!thisQstnMark) {
-                                    res.status(400);
-                                    res.send({ statusCode: 400, msg: "Please submit marks for all questions" });
-                                    return;
-                                }
-                                qstnsMarksQuery += (thisQstnMark + "', '");
-                            }
-                            dbConnect.query(
-                                "INSERT INTO questionMarks \
-                                (`candEmail`, `facName`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`) \
-                                VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "')",
-                                function (error2, results2, fields2) {
-                                    if (error2) {
-                                        res.status(500);
-                                        res.send({ statusCode: 500, msg: "Something went wrong" });
-                                    } else {
-                                        toSend.statusCode = 200;
-                                        toSend.msg = "Marks submitted successfully"
-
-                                        res.status(toSend.statusCode);
-                                        res.send(toSend);
+                            let query = "";
+                            if (absentOrPresent === "Present" && qstnsMarks && suitable) {
+                                let qstnsMarksQuery = '';
+                                for (let i = 0; i < qstnsMarks.length; i++) {
+                                    const thisQstnMark = (qstnsMarks[i]).trim();
+                                    if (!thisQstnMark) {
+                                        res.status(400);
+                                        res.send({ statusCode: 400, msg: "Please submit marks for all questions" });
+                                        return;
                                     }
-                                });
+                                    qstnsMarksQuery += (thisQstnMark + "', '");
+                                    query = "INSERT INTO questionMarks \
+                                    (`candEmail`, `facName`, `facEmail`, `q1`, `q2`, `q3`, `q4`, `q5`, `q6`, `q7`, `q8`, `q9`, `q10`, `q11`, `q12`, `suitable`, absentOrPresent) \
+                                    VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "', '" + absentOrPresent + "')";
+                                }
+                            } else if (absentOrPresent === "Absent") {
+                                console.log("else");
+                                query = "INSERT INTO questionMarks \
+                                (`candEmail`, `facName`, `facEmail`, absentOrPresent) \
+                                VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + absentOrPresent + "')";
+                            }
+
+                            console.log(query);
+                            dbConnect.query(query, function (error2, results2, fields2) {
+                                if (error2) {
+                                    res.status(500);
+                                    res.send({ statusCode: 500, msg: "Something went wrong" });
+                                    console.log(error2);
+                                } else {
+                                    toSend.statusCode = 200;
+                                    toSend.msg = "Marks submitted successfully"
+
+                                    res.status(toSend.statusCode);
+                                    res.send(toSend);
+                                }
+                            });
                         } catch (err) {
                             res.status(500);
                             res.send({ statusCode: 500, msg: "Something went wrong" });

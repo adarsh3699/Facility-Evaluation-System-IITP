@@ -196,8 +196,8 @@
     text-align: center;
 }
 
-#suitable {
-    margin-top: 10px;
+#suitable, #present {
+    margin: 10px;
     padding: 10px 20px;
     outline: unset;
     font-size: 20px;
