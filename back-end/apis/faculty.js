@@ -76,7 +76,6 @@ app.post('/confirm', function (req, res) {
                 if (error) {
                     res.status(500);
                     res.send({ statusCode: 500, msg: "Something went wrong" });
-                    console.log(error);
                 } else {
                     toSend.statusCode = 200;
                     toSend.msg = "Submit Successfully"
@@ -106,7 +105,6 @@ app.post('/submit-marks', function (req, res) {
     const suitable = req.body.suitable;
     const absentOrPresent = req.body.absentOrPresent;
 
-console.log(candEmail , facEmail , absentOrPresent);
     if (candEmail && facEmail && absentOrPresent) {
         try {
             dbConnect.query("SELECT * FROM `questionMarks` WHERE candEmail = '" + candEmail + "' AND facEmail = '" + facEmail + "'", function (error, results, fields) {
@@ -134,18 +132,16 @@ console.log(candEmail , facEmail , absentOrPresent);
                                     VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + qstnsMarksQuery + suitable + "', '" + absentOrPresent + "')";
                                 }
                             } else if (absentOrPresent === "Absent") {
-                                console.log("else");
                                 query = "INSERT INTO questionMarks \
                                 (`candEmail`, `facName`, `facEmail`, absentOrPresent) \
                                 VALUES ('" + candEmail + "', '" + facName + "', '" + facEmail + "', '" + absentOrPresent + "')";
                             }
 
-                            console.log(query);
                             dbConnect.query(query, function (error2, results2, fields2) {
                                 if (error2) {
                                     res.status(500);
                                     res.send({ statusCode: 500, msg: "Something went wrong" });
-                                    console.log(error2);
+
                                 } else {
                                     toSend.statusCode = 200;
                                     toSend.msg = "Marks submitted successfully"

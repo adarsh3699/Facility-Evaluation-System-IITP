@@ -86,18 +86,23 @@ function FacultyPage() {
             setSelectedCandidateDetails(apiResp?.data?.candDetails)
             setQuesMarks(apiResp?.data?.candMarks)
 
-            if (questionMarksId && apiResp?.data?.candMarks.q1 && apiResp?.data?.candMarks.q12) {
-                let total = 0;
-                for (let i = 1; i <= 12; i++) {
-                    total += apiResp?.data?.candMarks?.["q" + i]
-                }
-                setTotalQstnMarks(total)
-                setisSuitable(apiResp?.data?.candMarks.suitable)
+            if (questionMarksId) {
+                if (apiResp?.data?.candMarks?.q1 && apiResp?.data?.candMarks?.q12) {
+                    let total = 0;
+                    for (let i = 1; i <= 12; i++) {
+                        total += apiResp?.data?.candMarks?.["q" + i]
+                    }
+                    setTotalQstnMarks(total)
+                    setisSuitable(apiResp?.data?.candMarks?.suitable)
 
-                if (apiResp?.data?.candMarks.absentOrPresent === "Present") {
-                    setisPresent(true)
-                } else if (apiResp?.data?.candMarks.absentOrPresent === "Absent") {
-                    setisPresent(false)
+                } else if (apiResp?.data?.candMarks?.absentOrPresent) {
+                    if (apiResp?.data?.candMarks?.absentOrPresent === "Present") {
+                        setisPresent(true)
+                        console.log("true");
+                    } else if (apiResp?.data?.candMarks?.absentOrPresent === "Absent") {
+                        setisPresent(false)
+                        console.log("false");
+                    }
                 }
             }
 
@@ -117,7 +122,6 @@ function FacultyPage() {
     }
 
     function handleAbsentOrPresentDropDown(e) {
-        console.log(e.target.value);
         if (e.target.value === "Absent") {
             setisPresent(false)
         } else if (e.target.value === "Present") {
