@@ -15,6 +15,7 @@
     "googleapis": "^100.0.0",
     "mysql": "^2.16.0",
     "nodemailer": "^4.6.7",
-    "nodemon": "^2.0.16"
+    "nodemon": "^2.0.16",
+    "pdfkit-table": "^0.1.99"
   }
 }

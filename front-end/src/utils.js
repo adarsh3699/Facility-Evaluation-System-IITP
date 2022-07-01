@@ -38,8 +38,7 @@ const CANDIDATE_INFO = [
     { title: "Keyword4", key: "Keyword4" },
 ]
 
-// const apiBaseUrl = ""
-const apiBaseUrl = "http://localhost:4000/";
+const API_BASE_URL = "http://localhost:4000/";
 
 const userTypeFaculty = "c4ca4238a0b923820dcc509a6f75849b";
 const userTypeCandid = "c81e728d9d4c2f636f067f89cc14862c";
@@ -53,7 +52,7 @@ COOKIE_EXPIRATION_TYM.setTime(COOKIE_EXPIRATION_TYM.getTime() + (COOKIE_EXPIRATI
 const COOKIE_EXPIRATION_TIME = COOKIE_EXPIRATION_TYM;
 
 async function apiCall(endpoint, method, body) {
-    const apiUrl = apiBaseUrl + endpoint;
+    const apiUrl = API_BASE_URL + endpoint;
     try {
         let apiCallResp;
         if (method === "GET" || method === undefined) {
@@ -98,5 +97,5 @@ function validateUsername(name) {
 export {
     apiCall, getCookie, createCookie, validateUsername,
     userTypeFaculty, userTypeCandid, userTypeAdmin, expiryDate,
-    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO, DEPARTMENT
+    CONTACT_EMAIL, QUESTIONS, QUESTION_OPTIONS, CANDIDATE_INFO, DEPARTMENT, API_BASE_URL
 };

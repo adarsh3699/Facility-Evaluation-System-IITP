@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { apiCall, getCookie, createCookie, DEPARTMENT, userTypeAdmin } from "../utils";
+import { API_BASE_URL, getCookie, createCookie, DEPARTMENT, userTypeAdmin } from "../utils";
 import Loader from "../components/Loader";
 
 import "../css/adminPage.css";
@@ -7,7 +7,6 @@ import "../css/adminPage.css";
 const userId = getCookie("userId")
 
 function AdminPage() {
-    const [msg, setMsg] = useState("");
     const [isApiLoading, setApiLoading] = useState(false);
 
     useEffect(() => {
@@ -23,19 +22,12 @@ function AdminPage() {
         document.location.href = "/";
     }
 
-    // async function handleDepartmentClick(department) {
-    //     if (department) {
-    //         setApiLoading(true);
-    //         const apiResp = await apiCall("candidate/by-department?department=" + department);
-    //         if (apiResp.statusCode === 200) {
-    //             setIsDepartmentVisible(false)
-    //             setCandidatesData(apiResp.data)
-    //         } else {
-    //             console.log(apiResp.msg)
-    //         }
-    //         setApiLoading(false);
-    //     }
-    // }
+    function handlesummarySheetClick(department) {
+        if (department) {
+            window.open(API_BASE_URL + "generate-pdf/summary?dept=" + department);
+            // const apiResp = await apiCall("http://localhost:4000/generate-pdf/summary?dept=" + department);
+        }
+    }
 
     return (
         <div>
@@ -51,7 +43,7 @@ function AdminPage() {
                     DEPARTMENT.map((item, index) => (
                         <div className='rows' key={index} >
                             <div className='department'>{item}</div>
-                            <div className='summarySheet'>Summary Sheet</div>
+                            <div className='summarySheet' onClick={() => handlesummarySheetClick(item)}>Summary Sheet</div>
                             <div className='detailSheet'>Detail Sheet</div>
                         </div>
                     ))
