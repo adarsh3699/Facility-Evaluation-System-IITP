@@ -16,19 +16,13 @@
     font-weight: bold;
 }
 
-#titleName {
+#title-1, #title-2 {
     width: 30%;
     text-align: center;
     border-right: 1px #f1f1f1 solid;
 }
 
-#titleDepartment {
-    width: 30%;
-    text-align: center;
-    border-right: 1px #f1f1f1 solid;
-}
-
-#titleApplicationNumber {
+#title-3 {
     width: 30%;
     text-align: center
 }
@@ -44,19 +38,19 @@
     cursor: pointer;
 }
 
-.name {
+.col-1 {
     width: 30%;
     text-align: center;
     border-right: 1px #f1f1f1 solid;
 }
 
-.department {
+.col-2 {
     width: 30%;
     text-align: center;
     border-right: 1px #f1f1f1 solid;
 }
 
-.applicationNumber {
+.col-3 {
     width: 30%;
     text-align: center;
 }

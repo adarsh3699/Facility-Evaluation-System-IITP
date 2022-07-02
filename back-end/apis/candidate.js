@@ -138,7 +138,19 @@ app.get('/by-department', function (req, res) {
 
     if (department) {
         try {
-            dbConnect.query("SELECT name, applicationNumber, email, department FROM `CandidateInfo` WHERE department = '" + department + "'", function (error, results, fields) {
+            const query =
+                "SELECT \
+                    CandidateInfo.*, \
+                    COUNT(CASE WHEN questionMarks.absentOrPresent = 'Present' THEN 1 ELSE null END) AS presentCount, \
+                    COUNT(CASE WHEN questionMarks.absentOrPresent = 'Absent' THEN 1 ELSE null END) AS absentCount \
+                FROM CandidateInfo \
+                LEFT JOIN questionMarks \
+                ON CandidateInfo.email = questionMarks.candEmail \
+                WHERE CandidateInfo.department = '"+ department + "' \
+                GROUP BY CandidateInfo.email \
+            ";
+
+            dbConnect.query(query, function (error, results, fields) {
                 let toSend = {};
                 if (error) {
                     res.status(500);

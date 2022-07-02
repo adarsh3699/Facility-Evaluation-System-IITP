@@ -8,11 +8,11 @@ const app = express();
 dbConnect.connect(function (error) { });
 
 
-app.get('/', function (req, res) {
+app.get('/', async function (req, res) {
     const ka = req.query.ka;
     try {
         if (ka) {
-            const decodedKa = atob(ka);
+            const decodedKa = await Buffer.from(ka, 'base64').toString("utf8");
             const email = decryptText(decodedKa);
             if (!email) {
                 res.send("<center><h1>Invalid email</h1></center>");

@@ -34,7 +34,6 @@
     align-items: center;
     justify-content: center;
     color: white;
-    ;
     font-size: 150%;
     padding: 10px 0;
     font-weight: bold;
@@ -56,7 +55,6 @@
     align-items: center;
     justify-content: center;
     color: white;
-    ;
     font-size: 150%;
     padding: 10px 0;
     border-top: 1px solid #f1f1f1;
@@ -76,11 +74,21 @@
     cursor: pointer;
 }
 
+.summarySheet:hover {
+    color: rgb(210, 137, 9);
+    text-decoration: underline;
+}
+
 .detailSheet {
     width: 35%;
     text-align: center;
-    color: lightgreen;
+    color: rgb(144, 238, 150);
     cursor: pointer;
+}
+
+.detailSheet:hover {
+    color: rgb(32, 178, 122);
+    text-decoration: underline;
 }
 
 #logOut {
@@ -100,5 +108,16 @@
 }
 
 #logOut span:hover {
+    text-decoration: underline;
+}
+
+#backToHome {
+    margin-top: 10px;
+    text-align: center;
+    user-select: none;
+    cursor: pointer;
+}
+
+#backToHome:hover {
     text-decoration: underline;
 }
