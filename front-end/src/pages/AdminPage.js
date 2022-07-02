@@ -8,6 +8,7 @@ import "../css/adminPage.css";
 const userId = getCookie("userId")
 
 function AdminPage() {
+    const [error, setError] = useState("");
     const [isApiLoading, setApiLoading] = useState(false);
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [candidatesData, setCandidatesData] = useState([]);
@@ -41,6 +42,7 @@ function AdminPage() {
                 setCandidatesData(apiResp.data)
             } else {
                 console.log(apiResp.msg)
+                setError(apiResp.msg)
             }
             setApiLoading(false);
         }
@@ -61,6 +63,7 @@ function AdminPage() {
 
     return (
         <div>
+            <div id="error">{error}</div>
             <div id='title'>Admin Page</div>
 
             <div className='table'>
