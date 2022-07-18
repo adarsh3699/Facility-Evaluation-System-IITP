@@ -246,13 +246,9 @@
 
 #logOut {
     color: white;
-    position: absolute;
-    width: 100%;
     text-align: center;
     font-size: 20px;
-    bottom: 5px;
-    /* background-color: rebeccapurple; */
-    margin: auto;
+    margin-bottom: 20px;
 }
 
 #logOut span {
@@ -262,4 +258,11 @@
 
 #logOut span:hover {
     text-decoration: underline;
+}
+
+
+@media screen and (max-width: 650px) {
+    #tableTitle, .rows {
+        font-size: 100%;
+    }
 }

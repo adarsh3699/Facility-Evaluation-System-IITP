@@ -14,7 +14,7 @@ function AdminPage() {
     const [candidatesData, setCandidatesData] = useState([]);
 
     useEffect(() => {
-        if (!getCookie("userId") || getCookie("userType") !== userTypeAdmin) {
+        if (!userId || getCookie("userType") !== userTypeAdmin) {
             document.location.href = "/";
             return;
         }
