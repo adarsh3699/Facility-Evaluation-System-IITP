@@ -30,7 +30,6 @@ function ForgetPasswordPage() {
                 setShowChangePassForm(true)
                 setOtpMsg(apiResp.msg);
                 setEncryptedOtp(apiResp.otp)
-                console.log(apiResp.otp);
             } else {
                 setOtpMsg(apiResp.msg)
             }

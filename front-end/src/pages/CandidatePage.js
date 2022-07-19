@@ -154,12 +154,12 @@ function CandidatePage() {
 
                 <div className='lableInputBox'>
                     <label>Phone Number *</label>
-                    <input type='number' value={phoneNo} onChange={handlePhoneNoValue} readOnly={isDateExpire} placeholder="Phone No. (with country code)" required />
+                    <input type='tel' value={phoneNo} onChange={handlePhoneNoValue} readOnly={isDateExpire} placeholder="Phone No. (with country code)" required />
                 </div>
 
                 <div className='lableInputBox'>
                     <label>WhatsApp Number *</label>
-                    <input type='number' value={whatsappNo} onChange={handleWhatsappNoValue} readOnly={isDateExpire} placeholder="WhatsApp No. (with country code)" required />
+                    <input type='tel' value={whatsappNo} onChange={handleWhatsappNoValue} readOnly={isDateExpire} placeholder="WhatsApp No. (with country code)" required />
                 </div>
 
                 <div className='lableInputBox'>

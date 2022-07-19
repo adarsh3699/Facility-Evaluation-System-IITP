@@ -116,7 +116,7 @@ app.get('/detail-sheet/:fileName', async (req, res) => {
 
                 const candDetailsTable = {
                     title: "Candidate Details",
-                    headers: ["Name", name],
+                    headers: ["Name :-", name],
                     rows: [
                         ["Email", email],
                         ["Phone No.", phoneNo],

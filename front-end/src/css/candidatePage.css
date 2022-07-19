@@ -26,10 +26,17 @@ label {
     margin-bottom: 30px;
 }
 
-input, select {
+input {
     height: 30px;
     width: 600px;
-    font-size: 105%
+    font-size: 105%;
+}
+
+select {
+    height: 37px;
+    width: 610px;
+    font-size: 105%;
+    -webkit-appearance: menulist-button;
 }
 
 input::-webkit-outer-spin-button,
@@ -100,9 +107,16 @@ textarea {
         margin-right: 5px;
     }
 
-    input, select {
+    input {
         height: 25px;
         width: 100%;
         font-size: 100%;
     }
+
+    select {
+        height: 30px;
+        width: 103%;
+        font-size: 100%;
+    }
+
 }
