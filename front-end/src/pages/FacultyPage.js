@@ -87,7 +87,7 @@ function FacultyPage() {
             setQuesMarks(apiResp?.data?.candMarks)
 
             if (questionMarksId) {
-                if (apiResp?.data?.candMarks?.q1 && apiResp?.data?.candMarks?.q12) {
+                if (apiResp?.data?.candMarks?.q1 && apiResp?.data?.candMarks?.q12 && apiResp?.data?.candMarks?.absentOrPresent) {
                     let total = 0;
                     for (let i = 1; i <= 12; i++) {
                         total += apiResp?.data?.candMarks?.["q" + i]
@@ -95,14 +95,13 @@ function FacultyPage() {
                     setTotalQstnMarks(total)
                     setisSuitable(apiResp?.data?.candMarks?.suitable)
 
-                } else if (apiResp?.data?.candMarks?.absentOrPresent) {
                     if (apiResp?.data?.candMarks?.absentOrPresent === "Present") {
                         setisPresent(true)
                         console.log("true");
-                    } else if (apiResp?.data?.candMarks?.absentOrPresent === "Absent") {
-                        setisPresent(false)
-                        console.log("false");
                     }
+                } else if (apiResp?.data?.candMarks?.absentOrPresent === "Absent") {
+                    setisPresent(false)
+                    console.log("false");
                 }
             }
 
