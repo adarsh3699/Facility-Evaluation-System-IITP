@@ -3,7 +3,7 @@ const cookies = new Cookies();
 
 const expiryDate = "2022-09-28T22:59:02.448804522Z";
 
-const CONTACT_EMAIL = "adarsh3699@gmail.com"
+const CONTACT_EMAIL = ""
 
 const QUESTIONS = [
     {ques: "Knowledge"},

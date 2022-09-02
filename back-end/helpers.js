@@ -11,14 +11,14 @@ const dbConnect = mysql.createConnection({
     database: 'faculty-recruit-iitp'
 });
 
-const encryptionKey = "bhemu_is_kutta";
+const encryptionKey = "";
 
-const accountTitle = "Bhemu";
+const accountTitle = "";
 
-const CLIENT_ID = '238415785154-hlq2rg2psoi9cikjqdop740k7i5pjlgf.apps.googleusercontent.com';
-const CLEINT_SECRET = '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';
-const REDIRECT_URI = 'https://developers.google.com/oauthplayground';
-const REFRESH_TOKEN = '1//04XTT9t6VEjv5CgYIARAAGAQSNwF-L9Ir3J2Yz2y5cMcz4J8S20EAFcM9XTKWdrLbXmc9ukETxzpv4q78CdzAgV_dzKVx5zO1ttU';
+const CLIENT_ID = '';
+const CLEINT_SECRET = '';
+const REDIRECT_URI = '';
+const REFRESH_TOKEN = '';
 
 const oAuth2Client = new google.auth.OAuth2(
     CLIENT_ID,
@@ -104,7 +104,7 @@ async function sendMail(mailTo, mailSubject, title, object) {
             service: 'gmail',
             auth: {
                 type: 'OAuth2',
-                user: 'bhemu3699@gmail.com',
+                user: "<email>",
                 clientId: CLIENT_ID,
                 clientSecret: CLEINT_SECRET,
                 refreshToken: REFRESH_TOKEN,
@@ -113,7 +113,7 @@ async function sendMail(mailTo, mailSubject, title, object) {
         });
 
         const mailOptions = {
-            from: accountTitle + " <bhemu3699@gmail.com>",
+            from: accountTitle + "<email>",
             to: mailTo,
             subject: mailSubject,
             text: title + "/n" + object,
